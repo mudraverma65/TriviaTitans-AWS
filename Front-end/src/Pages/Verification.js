@@ -118,19 +118,13 @@ function Verification() {
                 const data = await response.json();
                 console.log(data)
 
-
-                    // .then(response => console.log(response.json()))
-                    // .then(data => {
                         if (data.status === "Success") {
                             localStorage.setItem('verified', 'true');
-                            navigate('/home');
+                            navigate('/profile');
                         } else {
                             alert(data.message);
                         }
-                    // })
-                    // .catch((error) => {
-                    //     console.error('Error:', error);
-                    // });
+                   
             }
         } else {
             if (answers.answer1 === '') {
@@ -172,7 +166,7 @@ function Verification() {
                         if (data.status === "Success") {
                             console.log(data);
                             localStorage.setItem('verified', 'true');
-                            navigate('/home');
+                            navigate('/profile');
                         } else {
                             alert(data.message);
                         }
@@ -196,9 +190,9 @@ function Verification() {
                 } else {
                     const payload = await session.getIdToken().decodePayload();
                     const email = await payload.email;
-                     setEmail(email);
+                    setEmail(email);
                     console.log(email);
-                     isUserRegistered(email);
+                    isUserRegistered(email);
                 }
             })
         }

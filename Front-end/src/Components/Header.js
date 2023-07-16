@@ -154,21 +154,22 @@ function Header() {
                     isLoggedIn ?
                         <>
                             <div className='header-menu-icon' onClick={() => navigate("/profile")} />
-                            <p className='header-menu-item' onClick={() => {
+                            <p className='dropdown' onClick={() => {
                                 localStorage.clear();
                                 setIsLoggedIn(false);
+								navigate('/home')
                             }}>Logout</p>
                         </>
                         :
                         // <a className='header-logo' href='https://triviatitans.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=6hn9vmanqlt905sa1n0skc8ql6&redirect_uri=http%3A%2F%2Flocalhost%3A3000' onClick={() => navigate('/logout')}>Login</a>
-                        <a className='header-logo' href='https://titans.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=5cm5p1n8m11vvclk312lifshs1&redirect_uri=http://localhost:3000' onClick={() => navigate('/logout')}>Login</a>
+                        <a className='dropdown' href='https://titans.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=5cm5p1n8m11vvclk312lifshs1&redirect_uri=http://localhost:3000' onClick={() => navigate('/logout')}>Login</a>
                 }
 
 						<Link to={Path.PROFILE_PAGE}>
 							<button className="profile-pic-navbar">
 								<img
-									src="/Images/profilePic.jpg"
-									alt=" "
+									src=""
+									alt="Profile Pic"
 								/>
 							</button>
 						</Link>
