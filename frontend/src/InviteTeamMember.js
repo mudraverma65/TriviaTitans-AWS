@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
-const InviteTeamMember = () => {
+const InviteTeamMember = ({ teamName }) => {
   const [selectedUser, setSelectedUser] = useState('');
   const [userSelected, setUserSelected] = useState(false);
   const [usersInvited, setUsersInvited] = useState(false);
@@ -31,24 +31,37 @@ const InviteTeamMember = () => {
 
       console.log('Sending invitations to:', usersSelected);
       setUsersInvited(true);
+
+      // Construct the message body
+      const messageBody = {
+        recipients: usersSelected,
+        team_name: teamName,
+        admin: "mudraverma65@gmail.com" // Replace 'MyTeam' with the desired team name
+      };
+
+      // Make the POST request to the API with the message body
+      const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/create-team'; // Replace with your actual API endpoint
+      const response = await axios.post(apiEndpoint, messageBody);
+      
+      console.log('API response:', response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleCreateTeam = async () => {
-    try {
-      if (usersSelected.length === 0) {
-        return;
-      }
+  // const handleCreateTeam = async () => {
+  //   try {
+  //     if (usersSelected.length === 0) {
+  //       return;
+  //     }
 
-      console.log('Creating team with invited users:', usersSelected);
-      console.log(userSelected)
-      // Implement your logic to create a team with invited users
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     console.log('Creating team with invited users:', usersSelected);
+  //     console.log(userSelected)
+  //     // Implement your logic to create a team with invited users
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
     fetchUsers();

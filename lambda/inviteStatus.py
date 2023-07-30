@@ -7,6 +7,8 @@ def lambda_handler(event, context):
     emailID = event['emailID']
     teamname = event['teamname']
     status = event['status']
+    
+    team_name = teamname.replace("_", " ")
 
     # Validate input parameters
     if not emailID or not teamname:
@@ -15,59 +17,93 @@ def lambda_handler(event, context):
             'body': 'emailID and teamname are required parameters'
         }
 
-    # Create a DynamoDB table resource
-    teamTable = dynamodb.Table('Team')
-    userTable = dynamodb.Table('User')
-
     try:
         # If status is "confirm", update the members set in the DynamoDB table
         if status == 'confirm':
-            # Get the current members set for the team
-            response = teamTable.get_item(
-                Key={
-                    'teamname': teamname
-                }
-            )
-            item = response.get('Item')
-            current_members = set(item.get('members', []))
+            update_team_table(emailID, team_name)
             
-            # Add the emailID to the members set
-            current_members.add(emailID)
-            
-            # Update the members set in the DynamoDB table
-            teamTable.update_item(
-                Key={
-                    'teamname': teamname
-                },
-                UpdateExpression='SET members = :members',
-                ExpressionAttributeValues={
-                    ':members': current_members
-                }
-            )
-            
-            userTable.update_item(
-            Key={
-                'emailID': emailID,
-                'teamname': teamname
-            },
-            UpdateExpression='SET #tn = :teamname, #st = :status',
-            ExpressionAttributeNames={
-                '#tn': 'teamname',
-                '#st': 'status'
-            },
-            ExpressionAttributeValues={
-                ':teamname': teamname,
-                ':status': status
-            }
-        )
-
-        return {
+        
+        if status == 'reject':
+            return {
             'statusCode': 200,
-            'body': 'Update successful'
+            'body': 'Invite rejected'
         }
+
+        # Create a new item in the User table
+        response = create_user_item(emailID, team_name)
+
+        return response
 
     except Exception as e:
         return {
             'statusCode': 500,
             'body': f'Failed to update the DynamoDB table: {str(e)}'
         }
+
+def update_team_table(emailID, teamname):
+    teamTable = dynamodb.Table('Team')
+
+    # Get the current members set for the team
+    response = teamTable.update_item(
+        Key={
+            'TeamName': teamname
+        },
+        UpdateExpression='ADD Members :email',
+        ExpressionAttributeValues={
+            ':email': set([emailID])
+        }
+    )
+
+def create_user_item(emailID, teamname):
+    userTable = dynamodb.Table('User')
+
+    try:
+        # Check if the item with the given emailID already exists in the table
+        response = userTable.get_item(
+            Key={
+                'emailID': emailID,
+            }
+        )
+
+        # If the item already exists, check if the teamname is already set
+        if 'Item' in response:
+            item = response['Item']
+            existing_teamname = item.get('teamname')
+
+            # if existing_teamname:
+            #     return {
+            #         'statusCode': 400,
+            #         'body': 'User is already in a team'
+            #     }
+
+            # If the teamname is not set, update the item with the new teamname
+            userTable.update_item(
+                Key={
+                    'emailID': emailID,
+                },
+                UpdateExpression='SET teamname = :teamname',
+                ExpressionAttributeValues={
+                    ':teamname': teamname,
+                }
+            )
+
+        else:
+            # If the item does not exist, create a new item in the User table
+            userTable.put_item(
+                Item={
+                    'emailID': emailID,
+                    'teamname': teamname
+                }
+            )
+
+        return {
+            'statusCode': 200,
+            'body': 'User item created successfully'
+        }
+
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': f'Failed to create the user item: {str(e)}'
+        }
+

@@ -8,12 +8,19 @@ import CreateTeamName from './CreateTeamName';
 import InviteTeamMember from './InviteTeamMember';
 
 const CreateTeam = () => {
+
+  const [teamName, setTeamName] = useState('');
+
+  const handleSetTeamName = (name) => {
+    setTeamName(name);
+  };
+
   return (
     <div className="container">
       <div className="card mt-5">
         <div className="card-body">
-          <CreateTeamName/>
-          <InviteTeamMember/>
+          <CreateTeamName onSetTeamName={handleSetTeamName} />
+          <InviteTeamMember teamName={teamName} />
         </div>
       </div>
     </div>
