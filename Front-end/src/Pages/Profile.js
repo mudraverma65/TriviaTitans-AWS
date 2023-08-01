@@ -15,9 +15,6 @@ import { getCurrentUser, updateUserAttributes } from "../Services/auth"
 export default function UserProfile() {
   const [user, setUser] = useState({})
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-<<<<<<< Updated upstream
-  const navigate = useNavigate();
-=======
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState(user ? user.phone_number : '');
@@ -157,30 +154,21 @@ export default function UserProfile() {
       }
     }
   };
->>>>>>> Stashed changes
 
   useEffect(() => {
 
     if (localStorage.getItem('token')) {
-<<<<<<< Updated upstream
-            setIsLoggedIn(true);
-            
-      }
-=======
       setIsLoggedIn(true);
     }
->>>>>>> Stashed changes
-
     const fetchUser = async () => {
       try {
         const user = await getCurrentUser()
         console.log(user);
         setUser(user)
-<<<<<<< Updated upstream
         localStorage.setItem('userEmail', user.email);
         localStorage.setItem('userName', user.name);
         
-=======
+
         setGender(user ? user.gender : '');
         setPhoneNumber(user ? user.phone_number : '');
         setAddress(user ? user.address : '');
@@ -192,7 +180,6 @@ export default function UserProfile() {
         //     console.log((user.gender && user.address && user.phone_number));
         //   }
         // }
->>>>>>> Stashed changes
       } catch (err) {
         console.error(err)
       }

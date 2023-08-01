@@ -6,12 +6,9 @@ import Profile from './Pages/Profile';
 import Verification from './Pages/Verification';
 // import { Amplify } from 'aws-amplify';
 import { useEffect } from 'react';
-<<<<<<< Updated upstream
 import Leaderboard from './Pages/Leaderboard';
-=======
 import UserProfile from './Pages/Profilepage';
 import JoinGame from './Pages/Joingame';
->>>>>>> Stashed changes
 
 function App() {
 
