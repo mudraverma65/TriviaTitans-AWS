@@ -6,6 +6,7 @@ import Profile from './Pages/Profile';
 import Verification from './Pages/Verification';
 // import { Amplify } from 'aws-amplify';
 import { useEffect } from 'react';
+import Leaderboard from './Pages/Leaderboard';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/verify" element={<Verification />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/*" element={<Home />} />
       </Routes>
     </BrowserRouter>

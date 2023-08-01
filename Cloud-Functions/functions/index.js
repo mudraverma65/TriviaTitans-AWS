@@ -14,6 +14,8 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
+
+
 app.post("/createIdentity", (req, res) => {
     (async () => {
         try {

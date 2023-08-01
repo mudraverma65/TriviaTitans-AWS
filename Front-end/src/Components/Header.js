@@ -89,16 +89,7 @@ function Header() {
 							className={Mobile ? 'navlinks-mobile' : 'navlinks'}
 							onClick={() => setMobile(false)}
 						>
-							<Link
-								to={Path.HOME}
-								className={`${
-									location.pathname === Path.HOME
-										? 'active-tab'
-										: 'inActive-tab'
-								}`}
-							>
-								Home
-							</Link>
+							
 							<Link
 								to={Path.TEAMS}
 								className={`${
@@ -118,6 +109,16 @@ function Header() {
 								}`}
 							>
 								Games
+							</Link>
+							<Link
+								to={Path.LEADERBOARD}
+								className={`${
+									location.pathname === Path.LEADERBOARD
+										? 'active-tab'
+										: 'inActive-tab'
+								}`}
+							>
+								Leaderboard
 							</Link>
 						</ul>
                         :
@@ -168,7 +169,7 @@ function Header() {
 						<Link to={Path.PROFILE_PAGE}>
 							<button className="profile-pic-navbar">
 								<img
-									src=""
+									src="https://pixabay.com/vectors/male-portrait-avatar-face-head-306408/"
 									alt="Profile Pic"
 								/>
 							</button>

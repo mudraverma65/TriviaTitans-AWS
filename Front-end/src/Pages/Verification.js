@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from 'antd';
-import axios from 'axios';
+
 import { createSession, getUserPool } from '../Services/UserPool';
 import '../Styles/Authentication.css';
 import '../Styles/Verification.css';

@@ -3,50 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../Components/Header';
 import '../Styles/Profile.css';
 
-import { getCurrentUser } from "../Services/auth"
-
-export default function UserProfile() {
-  const [user, setUser] = useState()
+export default function Leaderboard() {
+  // const [user, setUser] = useState()
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
 
     if (localStorage.getItem('token')) {
-            setIsLoggedIn(true);
-            
-      }
-
-    const fetchUser = async () => {
-      try {
-        const user = await getCurrentUser()
-        console.log(user);
-        setUser(user)
-        localStorage.setItem('userEmail', user.email);
-        localStorage.setItem('userName', user.name);
-        
-      } catch (err) {
-        console.error(err)
-      }
+            setIsLoggedIn(true);     
     }
 
-    fetchUser()
   }, [])
 
   return (
     <>
     <Header/>
     { isLoggedIn ?
-    <div>
-      {user && (
-        <div>
-          <h2>User Profile</h2>
-          <p>Username: {user.name}</p>
-          <p>Email: {user.email}</p>
-          
-        </div>
-      )}
-    </div> : 
+        
+    <div><iframe width="1500" height="700" src="https://lookerstudio.google.com/embed/reporting/a7978eb9-2345-4d44-aa51-5232ef51a0c8/page/mzhYD" frameborder="0" allowfullscreen></iframe></div>
+    
+    : 
     
     <div>
         <p className='error-message'>You are not Logged In!!</p>
