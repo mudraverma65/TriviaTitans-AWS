@@ -2,14 +2,20 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
-const InviteTeamMember = ({ teamName }) => {
+const InviteTeamMember = () => {
+  const navigate = useNavigate();
   const [selectedUser, setSelectedUser] = useState('');
   const [userSelected, setUserSelected] = useState(false);
   const [usersInvited, setUsersInvited] = useState(false);
   const [usersSelected, setUsersSelected] = useState([]);
   const [alreadySelected, setAlreadySelected] = useState(false);
   const [users, setUsers] = useState([]);
+  const currentUserEmail = localStorage.getItem('currentUserEmail');
+  console.log(currentUserEmail)
+  const teamName = localStorage.getItem('teamName');
+  console.log(teamName)
 
   const fetchUsers = async () => {
     try {
@@ -36,7 +42,7 @@ const InviteTeamMember = ({ teamName }) => {
       const messageBody = {
         recipients: usersSelected,
         team_name: teamName,
-        admin: "mudraverma65@gmail.com" // Replace 'MyTeam' with the desired team name
+        admin: currentUserEmail
       };
 
       // Make the POST request to the API with the message body
@@ -44,24 +50,12 @@ const InviteTeamMember = ({ teamName }) => {
       const response = await axios.post(apiEndpoint, messageBody);
       
       console.log('API response:', response.data);
+      navigate('/team');
+      
     } catch (error) {
       console.error(error);
     }
   };
-
-  // const handleCreateTeam = async () => {
-  //   try {
-  //     if (usersSelected.length === 0) {
-  //       return;
-  //     }
-
-  //     console.log('Creating team with invited users:', usersSelected);
-  //     console.log(userSelected)
-  //     // Implement your logic to create a team with invited users
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   useEffect(() => {
     fetchUsers();

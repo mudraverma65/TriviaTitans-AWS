@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const CreateTeamName = ({ onSetTeamName }) => {
+const CreateTeamName = () => {
   const [teamName, setTeamName] = useState('');
 
   const handleCreateTeam = async () => {
@@ -10,11 +10,13 @@ const CreateTeamName = ({ onSetTeamName }) => {
       const response = await axios.get('https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/team-name');
       const { data } = response;
       setTeamName(data.body);
-      onSetTeamName(data.body.replace(/\s/g, '_'));
+      // onSetTeamName(data.body.replace(/\s/g, '_'));
     } catch (error) {
       console.error(error);
     }
   };
+
+  localStorage.setItem('teamName', teamName.replace(/\s/g, '_'));
 
   // useEffect(() => {
   //   handleCreateTeam();

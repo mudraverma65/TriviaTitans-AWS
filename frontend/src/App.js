@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import CreateTeam from './CreateTeam';
-import CreateTeamName from './CreateTeamName';
-import InviteTeamMember from './InviteTeamMember';
+import CreateTeam from './Components/CreateTeam';
+import CreateTeamName from './Components/CreateTeamName';
+import InviteTeamMember from './Components/InviteTeamMember';
 import GameDetails from './Components/GameDetails';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LobbyPage from './Components/LobbyPage';

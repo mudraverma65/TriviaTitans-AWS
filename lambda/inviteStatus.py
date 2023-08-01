@@ -98,7 +98,7 @@ def create_user_item(emailID, teamname):
 
         return {
             'statusCode': 200,
-            'body': 'User item created successfully'
+            'body': 'Confirmed Successfully'
         }
 
     except Exception as e:
