@@ -43,11 +43,12 @@ const TeamDetails = () => {
     };
 
     console.log(teamName)
+    
   
     const fetchTeamDetails = async () => {
       try {
         const team_n = teamName.replace(/\s/g, '_');
-        const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/team-details?teamname=${team_n}`);
+        const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/team-details?teamname=${teamName.replace(/\s/g, '_')}`);
         const { data } = response;
         console.log(response.data.body);
         setTeamMembers(data.body.members);
@@ -186,6 +187,10 @@ const TeamDetails = () => {
     window.location.reload();
   };
 
+  const handleJoinGame = () => {
+    navigate('join-game');
+  };
+
 
   return (
     <div>
@@ -194,14 +199,13 @@ const TeamDetails = () => {
         <div className="text-center mb-2">
           <button className="btn btn-primary" onClick={handleCreateTeam}>
             Create Team
-          </button>
-        </div>
-        <h2 className="text-center mb-4">Team Details: {realTeamName}</h2>
-        <div className="text-center mt-1">
+          </button> <span/>
           <button className="btn btn-primary" onClick={handleReloadPage}>
             Reload Page
           </button>
         </div>
+        <h2 className="text-center mb-4">Team Details: {realTeamName}</h2>
+        
         {teamMembers && teamMembers.map((member) => (
           <div key={member} className="card mb-2">
             <div className="card-body d-flex justify-content-between align-items-center">
@@ -228,10 +232,13 @@ const TeamDetails = () => {
         <div className="text-center mt-4">
           <button className="btn btn-warning" onClick={handleLeaveTeam}>
             Leave Team
-          </button> <span>  </span>
+          </button> <span/>
           <button className={`btn ${saveChangesButtonPressed ? 'btn-success' : 'btn-warning'}`} onClick={handleSaveDetails}>
             {saveChangesButtonPressed ? 'Changes Saved' : 'Save Changes'}
-          </button>
+          </button> <span/>
+          <button className="btn btn-primary" onClick={handleJoinGame}>
+            Join Game
+          </button> <span/>
         </div>
         
       </div>
