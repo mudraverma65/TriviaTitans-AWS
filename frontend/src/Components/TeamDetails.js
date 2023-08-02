@@ -3,7 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 
-const TeamDetails = ({ currentUser, team_Name }) => {
+const TeamDetails = () => {
   const navigate = useNavigate();
   const [teamMembers, setTeamMembers] = useState([]); 
   const [adminEmailID, setAdmin] = useState('');
@@ -15,10 +15,8 @@ const TeamDetails = ({ currentUser, team_Name }) => {
   const[newAdmin, updateAdmin] = useState('');
   const[newMembers, updateMembers] = useState('');
 
-  const[teamName, setTeamName] = useState('');
-
   const currentUserEmail = localStorage.getItem('currentUserEmail');
-  // const teamName = localStorage.getItem('teamName');
+  const teamName = localStorage.getItem('teamName');
 
   const loggedIn = 'admin@example.com';
   // const teamName = 'Team_B';
@@ -40,24 +38,11 @@ const TeamDetails = ({ currentUser, team_Name }) => {
         console.error(error);
       }
     };
-
-    const fetchUserTeamName = async () => {
-      try {
-        const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/get-team?emailID=${currentUserEmail}`);
-        const { teamname } = response.data;
-        // Set the fetched teamname to the local storage
-        localStorage.setItem('teamName', teamname);
-        setTeamName(teamName)
-      } catch (error) {
-        console.error('Error fetching user teamname:', error);
-      }
-    };
-
-    fetchUserTeamName();
+    
     fetchTeamDetails();
-  }, [currentUserEmail, teamName]);
+  }, [teamName]);
 
-
+// }, [currentUserEmail, teamName]);
 
   const handlePromoteAdmin = (emailID) => {
     // Check if the emailID is the admin emailID
@@ -84,6 +69,11 @@ const TeamDetails = ({ currentUser, team_Name }) => {
     updateMembers((prevMembers) =>
       prevMembers.filter((member) => member!== emailID)
     );
+
+    
+    // setPromoteButtonPressed(false);
+    // setRemoveButtonPressed(true);
+    // setSaveChangesButtonPressed(false);
   };
 
   console.log(newMembers)

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios library for making API calls
 import '../Styles/styles.css';
 
 const GameDetails = ({ games }) => {
