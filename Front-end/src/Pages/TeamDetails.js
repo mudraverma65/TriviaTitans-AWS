@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+import Header from '../Components/Header';
 
 const TeamDetails = () => {
   const navigate = useNavigate();
@@ -21,12 +22,7 @@ const TeamDetails = () => {
   // const teamName = localStorage.getItem('teamName');
   const [teamName, setTeamName] = useState('');
 
-  const loggedIn = 'admin@example.com';
-  // const teamName = 'Team_B';
-
   const realTeamName = teamName.replace("_", " ")
-  // console.log(adminEmailID);
-
 
   useEffect(() => {
     const fetchUserTeamName = async () => {
@@ -47,11 +43,12 @@ const TeamDetails = () => {
     };
 
     console.log(teamName)
+    
   
     const fetchTeamDetails = async () => {
       try {
         const team_n = teamName.replace(/\s/g, '_');
-        const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/team-details?teamname=${team_n}`);
+        const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/team-details?teamname=${teamName.replace(/\s/g, '_')}`);
         const { data } = response;
         console.log(response.data.body);
         setTeamMembers(data.body.members);
@@ -69,8 +66,6 @@ const TeamDetails = () => {
   }, [currentUserEmail, teamName]);
   
 
-// }, [currentUserEmail, teamName]);
-
   const handlePromoteAdmin = (emailID) => {
     // Check if the emailID is the admin emailID
     if (emailID === adminEmailID) {
@@ -82,8 +77,6 @@ const TeamDetails = () => {
     setRemoveButtonPressed(false);
     setSaveChangesButtonPressed(false);
   };
-
-  // console.log(newAdmin)
 
   const handleRemoveMember = (emailID) => {
     // Check if the emailID is the admin emailID
@@ -98,9 +91,9 @@ const TeamDetails = () => {
     );
 
     
-    // setPromoteButtonPressed(false);
-    // setRemoveButtonPressed(true);
-    // setSaveChangesButtonPressed(false);
+    setPromoteButtonPressed(false);
+    setRemoveButtonPressed(true);
+    setSaveChangesButtonPressed(false);
   };
 
   // console.log(newMembers)
@@ -130,37 +123,18 @@ const TeamDetails = () => {
   
       console.log('API response:', response.data);
       setSaveChangesButtonPressed(true);
-      // navigate('/');
+
+      setTimeout(() => {
+        window.location.reload();
+        navigate('/');
+      }, 3000);
+      
     } catch (error) {
       console.error(error);
     }
     // await handleSaveDetails();
     
   };
-
-  // const handleSaveDetails = async () => {
-  //   try {
-  //       // Construct the message body
-  //       const messageBody = {
-  //           teamname: realTeamName,
-  //           admin: newAdmin,
-  //           members: newMembers // Replace 'MyTeam' with the desired team name
-  //       };
-  //       // Make the POST request to the API with the message body
-  //       const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/update-team'; // Replace with your actual API endpoint
-  //       const response = await axios.post(apiEndpoint, messageBody);
-        
-  //       console.log('API response:', response.data);
-  //       setSaveChangesButtonPressed(true);
-
-  //     // Reload the page after 1 second
-  //       setTimeout(() => {
-  //       window.location.reload();
-  //     }, 1000);
-  //     } catch (error) {
-  //       console.error(error);
-  //     } 
-  // };
 
   const handleSaveDetails = async () => {
     try {
@@ -196,12 +170,16 @@ const TeamDetails = () => {
       }
   
       // Reload the page after 1 second
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 3000);
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleCreateTeam = () => {
+    navigate('/create-team');
   };
   
 
@@ -209,45 +187,60 @@ const TeamDetails = () => {
     window.location.reload();
   };
 
+  const handleJoinGame = () => {
+    navigate('join-game');
+  };
+
 
   return (
-    <div className="container mt-4">
-      <div className="text-center">
-        <button className="btn btn-primary" onClick={handleReloadPage}>
-          Reload Page
-        </button>
-      </div>
-      <h2 className="text-center mb-4">Team Details: {realTeamName}</h2>
-      {teamMembers && teamMembers.map((member) => (
-        <div key={member} className="card mb-2">
-          <div className="card-body d-flex justify-content-between align-items-center">
-            <span>{member}</span>
-            {adminEmailID === currentUserEmail && (
-              <div>
-                <button
-                  className={`btn ${promoteButtonPressed ? 'btn-success' : 'btn-primary'} mr-2`}
-                  onClick={() => handlePromoteAdmin(member)}
-                >
-                  {promoteButtonPressed ? 'Admin Promoted' : 'Promote to Admin'}
-                </button>
-                <button
-                  className={`btn ${removeButtonPressed ? 'btn-success' : 'btn-danger'}`}
-                  onClick={() => handleRemoveMember(member)}
-                >
-                  {removeButtonPressed ? 'Member Removed' : 'Remove Member'}
-                </button>
-              </div>
-            )}
-          </div>
+    <div>
+      <Header />
+      <div className="container mt-4">
+        <div className="text-center mb-2">
+          <button className="btn btn-primary" onClick={handleCreateTeam}>
+            Create Team
+          </button> <span/>
+          <button className="btn btn-primary" onClick={handleReloadPage}>
+            Reload Page
+          </button>
         </div>
-      ))}
-      <div className="text-center mt-4">
-        <button className="btn btn-warning" onClick={handleLeaveTeam}>
-        Leave Team
-        </button> <></>
-        <button className={`btn ${saveChangesButtonPressed ? 'btn-success' : 'btn-warning'}`} onClick={handleSaveDetails}>
-          {saveChangesButtonPressed ? 'Changes Saved' : 'Save Changes'}
-        </button>
+        <h2 className="text-center mb-4">Team Details: {realTeamName}</h2>
+        
+        {teamMembers && teamMembers.map((member) => (
+          <div key={member} className="card mb-2">
+            <div className="card-body d-flex justify-content-between align-items-center">
+              <span>{member}</span>
+              {adminEmailID === currentUserEmail && (
+                <div>
+                  <button
+                    className={`btn ${promoteButtonPressed ? 'btn-success' : 'btn-primary'} mr-2`}
+                    onClick={() => handlePromoteAdmin(member)}
+                  >
+                    {promoteButtonPressed ? 'Admin Promoted' : 'Promote to Admin'}
+                  </button>
+                  <button
+                    className={`btn ${removeButtonPressed ? 'btn-success' : 'btn-danger'}`}
+                    onClick={() => handleRemoveMember(member)}
+                  >
+                    {removeButtonPressed ? 'Member Removed' : 'Remove Member'}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+        <div className="text-center mt-4">
+          <button className="btn btn-warning" onClick={handleLeaveTeam}>
+            Leave Team
+          </button> <span/>
+          <button className={`btn ${saveChangesButtonPressed ? 'btn-success' : 'btn-warning'}`} onClick={handleSaveDetails}>
+            {saveChangesButtonPressed ? 'Changes Saved' : 'Save Changes'}
+          </button> <span/>
+          <button className="btn btn-primary" onClick={handleJoinGame}>
+            Join Game
+          </button> <span/>
+        </div>
+        
       </div>
     </div>
   );
