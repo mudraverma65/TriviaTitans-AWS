@@ -10,6 +10,8 @@ import Leaderboard from './Pages/Leaderboard';
 import UserProfile from './Pages/Profilepage';
 import JoinGame from './Pages/Joingame';
 import Quiz from './Pages/Quiz';
+import TeamDetails from './Pages/TeamDetails';
+import CreateTeam from './Pages/CreateTeam';
 function App() {
 
   useEffect(() => {
@@ -40,6 +42,8 @@ function App() {
         <Route path='/UserProfile' element={<UserProfile /> } />
         <Route path='/joingame' element={<JoinGame /> } />
         <Route path='/quiz' element={<Quiz />} />
+        <Route path='/teams' element={<TeamDetails />} />
+        <Route path='/create-team' element={<CreateTeam />} />
       </Routes>
     </BrowserRouter>
   );
