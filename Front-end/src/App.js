@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import Leaderboard from './Pages/Leaderboard';
 import UserProfile from './Pages/Profilepage';
 import JoinGame from './Pages/Joingame';
-
+import Quiz from './Pages/Quiz';
 function App() {
 
   useEffect(() => {
@@ -39,6 +39,7 @@ function App() {
         <Route path="/*" element={<Home />} />
         <Route path='/UserProfile' element={<UserProfile /> } />
         <Route path='/joingame' element={<JoinGame /> } />
+        <Route path='/quiz' element={<Quiz />} />
       </Routes>
     </BrowserRouter>
   );
