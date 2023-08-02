@@ -8,6 +8,9 @@ const LobbyPage = () => {
   const [duration, setDuration] = useState('');
   const [filteredGames, setFilteredGames] = useState([]);
 
+  const currentUserEmail = localStorage.getItem('currentUserEmail');
+  const teamName = localStorage.getItem('teamName');
+
   useEffect(() => {
     // Filter games based on the selected criteria
     let filteredGames = [];

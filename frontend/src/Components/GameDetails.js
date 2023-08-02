@@ -8,12 +8,37 @@ const GameDetails = ({ games }) => {
   // const [timeRemaining, setTimeRemaining] = useState(0);
   // const [eventDescription, setEventDescription] = useState('');
 
+  const currentUserEmail = localStorage.getItem('currentUserEmail');
+  const teamName = localStorage.getItem('teamName');
+
   const calculateTimeRemaining = (startTime) => {
     const currentTime = new Date();
     const gameStartTime = new Date(startTime);
     const timeDifference = gameStartTime.getTime() - currentTime.getTime();
     const timeRemainingInSeconds = Math.max(0, Math.floor(timeDifference / 1000));
     return timeRemainingInSeconds;
+  };
+
+  const handleJoinGame = async (teamName, gameID) => {
+    try {
+      // Create the message body for the POST request
+      const messageBody = {
+        teamname: teamName,
+        gameID: gameID,
+      };
+
+      // Make the POST request to join the game
+      const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/join-game'; // Replace with your actual API endpoint
+      const response = await axios.post(apiEndpoint, messageBody);
+
+      // Handle the response if needed (optional)
+      console.log('Join game API response:', response.data);
+
+      // You can add any additional logic here, for example, showing a success message to the user.
+    } catch (error) {
+      // Handle the error if the POST request fails (optional)
+      console.error('Error joining game:', error);
+    }
   };
 
   // Format the time remaining in a human-readable format
@@ -68,7 +93,12 @@ const GameDetails = ({ games }) => {
           </div>
           {/* <p className="description">{game.Description}</p> */}
           <div className="col text-center">
-            <button className="btn btn-primary btn-join">Join</button>
+            <button
+              className="btn btn-primary btn-join"
+              onClick={() => handleJoinGame(teamName, game.gameID)}
+            >
+              Join
+            </button>
           </div>
         </div>
       ))}
