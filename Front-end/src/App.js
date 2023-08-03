@@ -9,7 +9,10 @@ import { useEffect } from 'react';
 import Leaderboard from './Pages/Leaderboard';
 import UserProfile from './Pages/Profilepage';
 import JoinGame from './Pages/Joingame';
-
+import Quiz from './Pages/Quiz';
+import TeamDetails from './Pages/TeamDetails';
+import CreateTeam from './Pages/CreateTeam';
+import LobbyPage from './Pages/LobbyPage';
 function App() {
 
   useEffect(() => {
@@ -39,6 +42,10 @@ function App() {
         <Route path="/*" element={<Home />} />
         <Route path='/UserProfile' element={<UserProfile /> } />
         <Route path='/joingame' element={<JoinGame /> } />
+        <Route path='/quiz' element={<Quiz />} />
+        <Route path='/teams' element={<TeamDetails />} />
+        <Route path='/create-team' element={<CreateTeam />} />
+        <Route path='/join-game' element={<LobbyPage />} />
       </Routes>
     </BrowserRouter>
   );
