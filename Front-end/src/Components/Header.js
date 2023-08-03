@@ -314,14 +314,14 @@ function Header() {
                         </>
                         :
                         // <a className='header-logo' href='https://triviatitans.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=6hn9vmanqlt905sa1n0skc8ql6&redirect_uri=http%3A%2F%2Flocalhost%3A3000' onClick={() => navigate('/logout')}>Login</a>
-                        <a className='dropdown' href='https://titans.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=5cm5p1n8m11vvclk312lifshs1&redirect_uri=http://localhost:3000' onClick={() => navigate('/logout')}>Login</a>
+                        <a className='dropdown' href='https://titans.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=5cm5p1n8m11vvclk312lifshs1&redirect_uri=https%3A%2F%2Ffrontend-bco7bjmf2q-uc.a.run.app' onClick={() => navigate('/logout')}>Login</a>
                 }
 
 						<Link to={Path.PROFILE_PAGE}>
 							<button className="profile-pic-navbar">
 								<img
-									src="https://pixabay.com/vectors/male-portrait-avatar-face-head-306408/"
-									alt="Profile Pic"
+									src="https://www.alchinlong.com/wp-content/uploads/2015/09/sample-profile-320x320.png"
+									alt="https://www.alchinlong.com/wp-content/uploads/2015/09/sample-profile-320x320.png"
 								/>
 							</button>
 						</Link>
