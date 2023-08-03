@@ -25,6 +25,7 @@ li {
 	text-decoration: none;
 	margin-right: 10px;
 	align-items: center;
+	text-decoration: none;
 }
 
 .navlinks {
@@ -40,6 +41,7 @@ li {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	width: 100%;
 }
 
 .form-container {
@@ -125,6 +127,7 @@ li {
 	display: flex;
 	justify-content: center;
 	text-decoration: none;
+	margin-bottom: 0;
 }
 
 .dropdown:hover,
@@ -136,11 +139,12 @@ a .nav-button img {
 }
 
 .nav-container {
-	max-width: 100%;
+	max-width: 90%;
 	margin: auto;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	width: 100%;
 }
 
 .form-container {
@@ -248,6 +252,8 @@ pre {
 	font-weight: 600;
 	letter-spacing: 1px;
 	font-size: 14px;
+	margin-bottom: 0;
+	justify-content: center;
 }
 
 .plan-dropdown{

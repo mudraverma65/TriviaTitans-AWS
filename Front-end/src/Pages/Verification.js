@@ -148,11 +148,17 @@ function Verification() {
 
                         if (data.status === "Success") {
                             localStorage.setItem('verified', 'true');
-                            navigate('/profile');
+
+                            if(email==="admin@gmail.com"){
+                                localStorage.setItem("isAdmin","true");
+                                navigate('/teams');
+                            }else{
+                                localStorage.setItem("isAdmin","false");
+                                navigate('/profile');
+                            }
                         } else {
                             alert(data.message);
-                        }
-                   
+                        }       
             }
         } else {
             if (answers.answer1 === '') {

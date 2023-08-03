@@ -84,8 +84,47 @@ function Header() {
 							</Link>
 						</div>
                     {
-                    isLoggedIn ?
-                        <ul
+                    isLoggedIn ? ( localStorage.getItem("isAdmin") === "true" ? 
+					
+					<ul
+							className={Mobile ? 'navlinks-mobile' : 'navlinks'}
+							onClick={() => setMobile(false)}
+						>
+							
+							<Link
+								to={Path.TEAMS}
+								className={`${
+									location.pathname === Path.TEAMS
+										? 'active-tab'
+										: 'inActive-tab'
+								}`}
+							>
+								Teams
+							</Link>
+							{/* <Link
+								to={Path.GAMES}
+								className={`${
+									location.pathname === Path.GAMES
+										? 'active-tab'
+										: 'inActive-tab'
+								}`}
+							>
+								Games
+							</Link>
+							<Link
+								to={Path.LEADERBOARD}
+								className={`${
+									location.pathname === Path.LEADERBOARD
+										? 'active-tab'
+										: 'inActive-tab'
+								}`}
+							>
+								Leaderboard
+							</Link> */}
+						</ul> 
+					:
+					
+					<ul
 							className={Mobile ? 'navlinks-mobile' : 'navlinks'}
 							onClick={() => setMobile(false)}
 						>
@@ -120,7 +159,43 @@ function Header() {
 							>
 								Leaderboard
 							</Link>
-						</ul>
+						</ul> )
+                        // <ul
+						// 	className={Mobile ? 'navlinks-mobile' : 'navlinks'}
+						// 	onClick={() => setMobile(false)}
+						// >
+							
+						// 	<Link
+						// 		to={Path.TEAMS}
+						// 		className={`${
+						// 			location.pathname === Path.TEAMS
+						// 				? 'active-tab'
+						// 				: 'inActive-tab'
+						// 		}`}
+						// 	>
+						// 		Teams
+						// 	</Link>
+						// 	<Link
+						// 		to={Path.GAMES}
+						// 		className={`${
+						// 			location.pathname === Path.GAMES
+						// 				? 'active-tab'
+						// 				: 'inActive-tab'
+						// 		}`}
+						// 	>
+						// 		Games
+						// 	</Link>
+						// 	<Link
+						// 		to={Path.LEADERBOARD}
+						// 		className={`${
+						// 			location.pathname === Path.LEADERBOARD
+						// 				? 'active-tab'
+						// 				: 'inActive-tab'
+						// 		}`}
+						// 	>
+						// 		Leaderboard
+						// 	</Link>
+						// </ul>
                         :
                         null
                     }
