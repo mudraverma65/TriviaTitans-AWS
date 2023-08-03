@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../Styles/Quiz.css';
 import Header from '../Components/Header';
+import ChatRoom from '../Components/ChatRoom';
 
 const Quiz = () => {
   const [quizData, setQuizData] = useState([]);
@@ -19,6 +20,16 @@ const Quiz = () => {
   const countdownRef = useRef();
   const navigate = useNavigate();
   const gamesId = 'W0hUiYQlR3nu5UesQ4wy';
+
+  const chatboxStyle = {
+    position: 'fixed',
+    bottom: '15px',
+    right: '15px',
+    width: '500px',
+    height: '500px',
+    // border: '1px solid #ccc', 
+    // overflow: 'hidden' 
+};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -233,6 +244,9 @@ const Quiz = () => {
         </div>
       )}
     </div>
+    <div style={chatboxStyle}>
+                <ChatRoom />
+            </div>
     </div>
   );
 };

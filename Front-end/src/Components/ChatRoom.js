@@ -12,11 +12,12 @@ function ChatRoom(){
         user: 'naveen',
         message: 'this is naveen'
     }
-
+    const name = localStorage.getItem('userName');
+    console.log(name);
     const scrollBottomRef = useRef(null);
     const webSocket = useRef(null);
     const [chatMessages, setChatMessages] = useState([]);
-    const [user, setUser] = useState('naveen');
+    const [user, setUser] = useState('');
     const [message, setMessage] = useState('');
 
     useEffect(() => {
@@ -55,7 +56,10 @@ function ChatRoom(){
         webSocket.current.onmessage = (event) => {
             const data = JSON.parse(event.data);
             console.log('Received message:', data);
-
+            console.log(typeof data);
+            // console.log(data.System);
+            // const temp = data.System;
+            // console.log(typeof temp);
             setChatMessages((prevChatMessages) => [...prevChatMessages, data]);
             // setChatMessages(data);
             console.log(data);
@@ -66,9 +70,9 @@ function ChatRoom(){
         }
     }, [chatMessages]);
 
-    const handleUserChange = (event) => {
-        setUser(event.target.value);
-    }
+    // const handleUserChange = (event) => {
+    //     setUser(event.target.value);
+    // }
 
     const handleMessageChange = (event) => {
         setMessage(event.target.value);
@@ -85,12 +89,13 @@ function ChatRoom(){
         // if(user && message) {
             console.log('Send!');
             const payload = {
-                name: "naveen",
+                name: name,
                 message: message,
                 teamID: "team1",
                 action: "sendMessage",
               };
             webSocket.current.send(JSON.stringify(payload));
+            setMessage("");
             // webSocket.current.send({user:"naveen", message: "this","teamId": "team1", action: "sendMessage"});
             // webSocket.current.onmessage = (event) => {
             //     const data = JSON.parse(event.data);
@@ -102,11 +107,30 @@ function ChatRoom(){
         // }
     };
 
-    const listChatMessages = chatMessages.map((chatMessage, index) => (
-        <ListItem key={index}>
-          <ListItemText primary={chatMessage.System ? chatMessage.System : `${chatMessage.user}: ${chatMessage.message}`} />
-        </ListItem>
-      ));
+    // const listChatMessages = chatMessages.map((chatMessage, index) => (
+    //     <ListItem key={index}>
+    //       <ListItemText primary={chatMessage.System ? chatMessage.System : `${user}: ${chatMessage.message}`} />
+    //     </ListItem>
+    //   ));
+    const listChatMessages = chatMessages.map((chatMessage, index) => {
+        if (chatMessage.System) {
+          // Display system message
+          return (
+            <ListItem key={index}>
+              <ListItemText primary={`System: ${chatMessage.System}`} />
+            </ListItem>
+          );
+        } else {
+          // Display user message
+          const userName = Object.keys(chatMessage)[0]; // Assuming there's only one key (e.g., 'naveen')
+          const userMessage = chatMessage[userName];
+          return (
+            <ListItem key={index}>
+              <ListItemText primary={`${userName}: ${userMessage}`} />
+            </ListItem>
+          );
+        }
+      });
 
     return (
         <Fragment>
@@ -130,7 +154,7 @@ function ChatRoom(){
                                         value={user}
                                         label="Nickname" */}
                                         {/* variant="outlined"/> */}
-                                    <Typography variant="outlined">{user}</Typography>
+                                    {/* <Typography variant="outlined">{user}</Typography> */}
                                 </FormControl>
                             </Grid>
                             <Grid xs={9} item>

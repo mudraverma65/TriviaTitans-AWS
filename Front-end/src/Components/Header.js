@@ -169,8 +169,8 @@ function Header() {
 						<Link to={Path.PROFILE_PAGE}>
 							<button className="profile-pic-navbar">
 								<img
-									src="https://pixabay.com/vectors/male-portrait-avatar-face-head-306408/"
-									alt="Profile Pic"
+									src="https://www.alchinlong.com/wp-content/uploads/2015/09/sample-profile-320x320.png"
+									alt="https://www.alchinlong.com/wp-content/uploads/2015/09/sample-profile-320x320.png"
 								/>
 							</button>
 						</Link>
