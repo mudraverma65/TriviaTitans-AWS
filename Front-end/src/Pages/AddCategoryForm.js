@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/AddCategoryForm.css'
+import Header from '../Components/Header';
 
 
 const AddCategoryForm = () => {
@@ -25,6 +26,8 @@ const AddCategoryForm = () => {
     };
 
     return (
+        <>
+        <Header/>
         <div className= "form-container">
         <div className="container mt-4 add-category-form">
             <div className="form-header">
@@ -48,7 +51,9 @@ const AddCategoryForm = () => {
             </form>
         </div>
         </div>
+        </>
     );
+    
 };
 
 export default AddCategoryForm;

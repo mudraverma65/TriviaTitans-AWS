@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/AddGames.css';
+import Header from '../Components/Header';
 
 const AddGames = () => {
     const [formData, setFormData] = useState({
@@ -54,6 +55,8 @@ const AddGames = () => {
     };
 
     return (
+        <>
+        <Header/>
         <div className="container mt-4">
             <div className="add-games-form">
                 <h2>Add Game</h2>
@@ -115,6 +118,7 @@ const AddGames = () => {
                 </form>
             </div>
         </div>
+        </>
     );
 };
 
