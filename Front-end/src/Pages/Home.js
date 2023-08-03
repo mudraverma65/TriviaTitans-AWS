@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // import { createSession } from '../Services/UserPool';
 
 function Home() {
-const navigate = useNavigate();
+    const navigate = useNavigate();
     useEffect(() => {
         const queryParameters = new URLSearchParams(window.location.hash.substring(1));
         const idTokenParam = queryParameters.get("id_token");
@@ -20,6 +20,8 @@ const navigate = useNavigate();
         if (token && idToken && verified !== 'true') {
             // window.location.href = 'http://localhost:3000/verify';
                 navigate("/verify")
+            // navigate("https://frontend-image-hl7c6ytlmq-uc.a.run.app/verify")
+
         }
     }, [])
 

@@ -32,7 +32,7 @@ export default function UserProfile() {
     // Fetch data from DynamoDB using the email
     const fetchProfilePicData = async () => {
 
-      axios.get("https://xqip2gdlbl6gadeqekbubaqhjm0mvvwh.lambda-url.us-east-1.on.aws/?email="+user.email)
+  axios.get("https://xqip2gdlbl6gadeqekbubaqhjm0mvvwh.lambda-url.us-east-1.on.aws/?email="+user.email)
   .then(response => {
     // Handle the response data
     console.log('sdfsdfsdf', response.data);
@@ -49,12 +49,7 @@ export default function UserProfile() {
     console.error('Error:', error);
     setProfilePic(null);
   });
-
-    
-
-
-
-    };
+};
 
     if(user){
  fetchProfilePicData();
