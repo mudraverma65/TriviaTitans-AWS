@@ -13,6 +13,12 @@ import Quiz from './Pages/Quiz';
 import TeamDetails from './Pages/TeamDetails';
 import CreateTeam from './Pages/CreateTeam';
 import LobbyPage from './Pages/LobbyPage';
+import AddCategoryForm from "./Pages/AddCategoryForm";
+import AddGames from "./Pages/AddGames";
+import AddQuestionsForm from "./Pages/AddQuestionsForm";
+import FilteredGames from "./Pages/FilteredGames";
+import FilteredQuestions from "./Pages/FilteredQuestions";
+import ShowAllCategories from "./Pages/ShowAllCategories";
 function App() {
 
   useEffect(() => {
@@ -46,6 +52,15 @@ function App() {
         <Route path='/teams' element={<TeamDetails />} />
         <Route path='/create-team' element={<CreateTeam />} />
         <Route path='/join-game' element={<LobbyPage />} />
+        {/**
+         * Trusha's routes
+         * */}
+        <Route path='/admin/category/add' element={<AddCategoryForm />} />
+        <Route path='/admin/game/add' element={<AddGames />} />
+        <Route path='/admin/questions/add' element={<AddQuestionsForm />} />
+        <Route path='/admin/games/filter' element={<FilteredGames />} />
+        <Route path='/admin/questions/filter' element={<FilteredQuestions />} />
+        <Route path='/admin/categories' element={<ShowAllCategories />} />
       </Routes>
     </BrowserRouter>
   );
