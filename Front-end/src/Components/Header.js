@@ -1,8 +1,8 @@
 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 
 import '../App.css';
-import React, { useState, useEffect } from 'react';
 import Path from "../Constant/Path";
 import '../Styles/Navbar.css';
 import { FaBars, FaSearch } from 'react-icons/fa';
@@ -12,14 +12,14 @@ import { ImCross } from 'react-icons/im';
 
 function Header() {
     const location = useLocation();
-	// const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = React.useState(false);
 	const [searchActive, setSearchActive] = React.useState(false);
 
-	// const handleOpen = () => {
-	// 	setOpen(!open);
-	// };
+	const handleOpen = () => {
+		setOpen(!open);
+	};
 
-	// let menuRef = useRef();
+	let menuRef = useRef();
 
 	useEffect(() => {
 		if (localStorage.getItem('token')) {
@@ -85,21 +85,95 @@ function Header() {
 						</div>
                     {
                     isLoggedIn ? ( localStorage.getItem("isAdmin") === "true" ? 
-					
+					<>
+					<div
+							className="dropdown"
+							ref={menuRef}
+						>
+							<button
+								className="plus nav-button"
+								onClick={handleOpen}
+							>
+								Add
+							</button>
+							{open ? (
+								<ul className="menu">
+									<li className="menu-item">
+										<Link
+								to={Path.ADD_CATEGORY}
+								className={`${
+									location.pathname === Path.ADD_CATEGORY
+										? 'active-tab'
+										: 'inActive-tab'
+								}`}
+							>
+								Category
+							</Link>
+							
+									</li>
+									<li className="menu-item">
+										<Link
+								to={Path.ADD_GAME}
+								className={`${
+									location.pathname === Path.ADD_GAME
+										? 'active-tab'
+										: 'inActive-tab'
+								}`}
+							>
+								Game
+							</Link>
+							
+									</li>
+									<li className="menu-item">
+										<Link
+								to={Path.ADD_QUESTION}
+								className={`${
+									location.pathname === Path.ADD_QUESTION
+										? 'active-tab'
+										: 'inActive-tab'
+								}`}
+							>
+								Question
+							</Link>
+									</li>
+								</ul>
+							) : null}
+					</div>
 					<ul
 							className={Mobile ? 'navlinks-mobile' : 'navlinks'}
 							onClick={() => setMobile(false)}
 						>
 							
+							
 							<Link
-								to={Path.TEAMS}
+								to={Path.FILTER_GAMES}
 								className={`${
-									location.pathname === Path.TEAMS
+									location.pathname === Path.FILTER_GAMES
 										? 'active-tab'
 										: 'inActive-tab'
 								}`}
 							>
-								Teams
+								Filter Games
+							</Link>
+							<Link
+								to={Path.FILTER_QUESTION}
+								className={`${
+									location.pathname === Path.FILTER_QUESTION
+										? 'active-tab'
+										: 'inActive-tab'
+								}`}
+							>
+								Filter Question
+							</Link>
+							<Link
+								to={Path.CATEGORIES}
+								className={`${
+									location.pathname === Path.CATEGORIES
+										? 'active-tab'
+										: 'inActive-tab'
+								}`}
+							>
+								Category
 							</Link>
 							{/* <Link
 								to={Path.GAMES}
@@ -121,7 +195,9 @@ function Header() {
 							>
 								Leaderboard
 							</Link> */}
-						</ul> 
+					</ul> 
+					</>
+
 					:
 					
 					<ul

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/FilteredGames.css';
+import Header from '../Components/Header';
 
 const FilteredGames = () => {
     const [formData, setFormData] = useState({
@@ -38,6 +39,8 @@ const FilteredGames = () => {
     };
 
     return (
+        <>
+        <Header/>
         <div className="container mt-4">
             <div className="filter-games-form">
                 <h2>Filter Games</h2>
@@ -112,6 +115,7 @@ const FilteredGames = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

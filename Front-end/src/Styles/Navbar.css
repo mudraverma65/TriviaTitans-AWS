@@ -209,6 +209,7 @@ pre {
 	text-align: center;
 	text-decoration: none;
 	padding: 5px 10px;
+	width:100px;
 }
 
 .inActive-tab:hover {
@@ -231,7 +232,7 @@ pre {
 	background-color: transparent;
 	color: #F5F5F5;
 	outline: none;
-	border: none;
+	border: none !important;
 }
 
 .search input::placeholder {
@@ -254,6 +255,7 @@ pre {
 	font-size: 14px;
 	margin-bottom: 0;
 	justify-content: center;
+	width:120px !important;
 }
 
 .plan-dropdown{
@@ -263,6 +265,12 @@ pre {
 	text-decoration: none;
 	padding: 10px 20px;
 	position: relative;
+}
+
+ .nav-button{
+	text-align: center;
+	height: 25px;
+	width: 100px;
 }
 
 .dropdown .plus span, .dropdown .plus svg {
@@ -308,6 +316,7 @@ pre {
 	box-shadow: 0 5px 30px rgba(55, 84, 170, 15%);
 	border-radius: 4px;
 	z-index: 10;
+	padding-left: 0 !important;
 }
 
 .menu a{

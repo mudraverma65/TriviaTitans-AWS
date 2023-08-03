@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/FilteredQuestions.css';
+import Header from '../Components/Header';
 
 const FilteredQuestions = () => {
     const [formData, setFormData] = useState({
@@ -35,6 +36,8 @@ const FilteredQuestions = () => {
     };
 
     return (
+        <>
+        <Header/>
         <div className="container mt-4">
             <div className="filter-form">
                 <h2>Filter Questions</h2>
@@ -89,6 +92,7 @@ const FilteredQuestions = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../Styles/ShowAllCategories.css'
+import Header from '../Components/Header';
 
 const ShowAllCategories = () => {
     const [categories, setCategories] = useState([]);
@@ -24,6 +25,8 @@ const ShowAllCategories = () => {
     }, []);
 
     return (
+        <>
+        <Header/>
         <div className="form-container">
         <div className="container mt-4">
             <h2>All Categories</h2>
@@ -36,6 +39,7 @@ const ShowAllCategories = () => {
             </ul>
         </div>
         </div>
+        </>
     );
 };
 

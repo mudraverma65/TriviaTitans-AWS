@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/AddQuestionsForm.css';
+import Header from '../Components/Header';
 
 const AddQuestionsForm = () => {
     const [subject, setSubject] = useState('');
@@ -34,6 +35,8 @@ const AddQuestionsForm = () => {
     };
 
     return (
+        <>
+        <Header/>
         <div className="container mt-4 add-questions-form">
             <div className="form-header">
                 <h2>Add Questions</h2>
@@ -99,6 +102,7 @@ const AddQuestionsForm = () => {
                 </button>
             </form>
         </div>
+        </>
     );
 };
 

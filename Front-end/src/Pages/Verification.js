@@ -151,7 +151,7 @@ function Verification() {
 
                             if(email==="admin@gmail.com"){
                                 localStorage.setItem("isAdmin","true");
-                                navigate('/teams');
+                                navigate('/admin/categories');
                             }else{
                                 localStorage.setItem("isAdmin","false");
                                 navigate('/profile');
