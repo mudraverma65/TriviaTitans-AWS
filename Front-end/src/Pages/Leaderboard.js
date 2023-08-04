@@ -27,7 +27,6 @@ export default function Leaderboard() {
     
     <div>
         <p className='error-message'>You are not Logged In!!</p>
-        {/* <a className='loginFirst' href='https://titans.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=5cm5p1n8m11vvclk312lifshs1&redirect_uri=https://frontend-bco7bjmf2q-uc.a.run.app' onClick={() => navigate('/logout')}>Login</a> */}
         <a className='loginFirst' href='https://titans.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=5cm5p1n8m11vvclk312lifshs1&redirect_uri=http://localhost:3000' onClick={() => navigate('/logout')}>Login</a>
     </div>
      }
