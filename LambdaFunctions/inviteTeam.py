@@ -8,7 +8,7 @@ def lambda_handler(event, context):
     real_team_name = event['team_name']
     admin = event['admin']
     
-    team_name = team_name.replace(' ', '_')
+    team_name = real_team_name.replace(' ', '_')
 
 
     # Replace with your actual SNS topic ARN
@@ -58,8 +58,8 @@ def create_team(real_team_name, admin):
     user_table = dynamodb.Table('User')
     user_table.update_item(
         Key={'emailID': admin},
-        UpdateExpression='SET teamname = :team_name',
+        UpdateExpression='SET teamname = :real_team_name',
         ExpressionAttributeValues={
-            ':team_name': real_team_name,
+            ':real_team_name': real_team_name,
         }
     )
