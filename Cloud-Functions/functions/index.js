@@ -3,7 +3,7 @@ const cors = require("cors");
 const functions = require("firebase-functions");
 
 const admin = require("firebase-admin");
-let serviceAccount = require("./data-w23-project-firebase-adminsdk-2olq5-d8a02a793e.json");
+let serviceAccount = require("./serviceAccountKey.json");
 
 const app = express();
 app.use(cors({ origin: true }));
