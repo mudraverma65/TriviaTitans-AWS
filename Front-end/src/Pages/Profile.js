@@ -8,7 +8,7 @@ import CircleUpload from '../Components/CircleUpload';
 import ProfilePicture from '../Components/ProfilePicture';
 import axios from 'axios';
 import Card from 'antd/es/card/Card';
-
+import ChatBot from '../Components/Chatbot';
 import { getCurrentUser, updateUserAttributes } from "../Services/auth"
 
 
@@ -191,6 +191,7 @@ export default function UserProfile() {
   return (
     <>
       <Header />
+      <ChatBot/>
       {isLoggedIn ? (
         <div>
           {user ? (

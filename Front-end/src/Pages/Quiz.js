@@ -19,8 +19,15 @@ const Quiz = () => {
   const countdownRef = useRef();
   const navigate = useNavigate();
   const gamesId = 'W0hUiYQlR3nu5UesQ4wy';
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   useEffect(() => {
+
+    if (localStorage.getItem('token')) {
+            setIsLoggedIn(true);     
+    }
+
     const fetchData = async () => {
       try {
         const response = await axios.post(
@@ -102,8 +109,6 @@ const Quiz = () => {
 
   const handleSubmitQuiz = async () => {
     // Perform the actions before submitting the quiz
-    
-  
     try {
       // API 1: Create table with teamname
       await axios.post(
@@ -118,10 +123,10 @@ const Quiz = () => {
       await axios.post(
         'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/createuserscoretable',
         {
-          playerid: 'Jay',
+          playerid: 'Pari',
         }
       );
-      console.log('User score table created successfully with playerid: XYZ');
+      console.log('User score table created successfully with playerid: ');
   
       // Additional API 1: Update team table
       await axios.post(
@@ -136,18 +141,29 @@ const Quiz = () => {
   
       // Additional API 2: Update user score table
       await axios.post(
-        'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/updateuserscoretable',
+        'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/updateusersoretable',
         {
-          playerId: 'Jay',
+          playerId: 'Pari',
           categoryName: categoryName, // Assuming you want to use the current category name
           score: score,
         }
       );
       console.log('User score table updated successfully');
-      
-      
     } catch (error) {
-      console.error('Error creating/updating tables:', error);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
     }
     navigate('/leaderboard');
   };
@@ -158,10 +174,11 @@ const Quiz = () => {
   const isLastQuestion = currentQuestionIndex === quizData.length - 1;
 
   return (
+    <>
+    {isLoggedIn?
     <div>
         <Header />
       <div className="quiz-container">
-      <h1>Trivia Titans</h1>
 
       <div className="score-container">
         <h2>Current Score</h2>
@@ -233,7 +250,8 @@ const Quiz = () => {
         </div>
       )}
     </div>
-    </div>
+    </div> : <div>Not logged inh</div>}
+    </>
   );
 };
 

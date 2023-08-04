@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Header from '../Components/Header';
 import '../Styles/Home.css';
 // import { createSession } from '../Services/UserPool';
-
+import ChatBot from '../Components/Chatbot';
 function Home() {
 
     useEffect(() => {
@@ -24,6 +24,7 @@ function Home() {
     return (
         <>
             <Header />
+            <ChatBot />
             Home
         </>
     )
