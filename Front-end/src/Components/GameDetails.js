@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios library for making API calls
 import '../Styles/styles.css';
+import { useNavigate } from 'react-router-dom';
 
 const GameDetails = ({ games }) => {
 
+  const navigate = useNavigate();
+
   const currentUserEmail = localStorage.getItem('userEmail');
   const teamName = localStorage.getItem('teamName');
+  // const realTeamName = teamName.replace("_", " ");
 
   const calculateTimeRemaining = (startTime) => {
     const currentTime = new Date();
@@ -26,9 +30,12 @@ const GameDetails = ({ games }) => {
       // Make the POST request to join the game
       const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/join-game'; // Replace with your actual API endpoint
       const response = await axios.post(apiEndpoint, messageBody);
-
+      localStorage.setItem("gameID", gameID)
+      navigate('/quiz')
       // Handle the response if needed (optional)
       console.log('Join game API response:', response.data);
+
+      
 
       // You can add any additional logic here, for example, showing a success message to the user.
     } catch (error) {
@@ -60,7 +67,7 @@ const GameDetails = ({ games }) => {
   return (
     <div>
       {games.map((game) => (
-        <div key={game.gameID} className="event-details-container">
+        <div key={game.gameId} className="event-details-container">
           <div className="row">
             <div className="col-sm-4">
               <p className="game-info">
@@ -91,7 +98,7 @@ const GameDetails = ({ games }) => {
           <div className="col text-center">
             <button
               className="btn btn-primary btn-join"
-              onClick={() => handleJoinGame(teamName, game.gameID)}
+              onClick={() => handleJoinGame(teamName, game.gameId)}
             >
               Join
             </button>

@@ -18,7 +18,10 @@ const Quiz = () => {
   const [categoryName, setCategoryName] = useState(''); // New state for category name
   const countdownRef = useRef();
   const navigate = useNavigate();
-  const gamesId = 'W0hUiYQlR3nu5UesQ4wy';
+
+  const gamesId = localStorage.getItem('gameID');
+  const teamName = localStorage.getItem('teamName');
+  // const gamesId = 'W0hUiYQlR3nu5UesQ4wy';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,7 +112,7 @@ const Quiz = () => {
       await axios.post(
         'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/createtable',
         {
-          teamname: 'Team1',
+          teamname: teamName,
         }
       );
       console.log('Table created successfully with teamname: Raju');
@@ -127,7 +130,7 @@ const Quiz = () => {
       await axios.post(
         'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/updateteamtable',
         {
-          teamName: 'Team1',
+          teamName: teamName,
           categoryName: categoryName, // Assuming you want to use the current category name
           score: score,
         }
@@ -161,7 +164,7 @@ const Quiz = () => {
     <div>
         <Header />
       <div className="quiz-container">
-      <h1>Trivia Titans</h1>
+      <h1>{teamName}</h1>
 
       <div className="score-container">
         <h2>Current Score</h2>

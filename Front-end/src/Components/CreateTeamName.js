@@ -14,8 +14,8 @@ const CreateTeamName = () => {
       console.error(error);
     }
   };
-
-  localStorage.setItem('teamName', teamName.replace(/\s/g, '_'));
+  localStorage.setItem('teamName',teamName);
+  // localStorage.setItem('teamName', teamName.replace(/\s/g, '_'));
 
   return (
     <div>

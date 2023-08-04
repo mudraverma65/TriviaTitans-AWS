@@ -188,7 +188,7 @@ const TeamDetails = () => {
   };
 
   const handleJoinGame = () => {
-    navigate('join-game');
+    navigate('/join-game');
   };
 
 
