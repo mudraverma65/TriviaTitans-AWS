@@ -3,7 +3,7 @@ import Header from '../Components/Header';
 import '../Styles/Home.css';
 import { useNavigate } from 'react-router-dom';
 // import { createSession } from '../Services/UserPool';
-
+import ChatBot from '../Components/Chatbot';
 function Home() {
     const navigate = useNavigate();
     useEffect(() => {
@@ -28,6 +28,7 @@ function Home() {
     return (
         <>
             <Header />
+            <ChatBot />
             Home
         </>
     )

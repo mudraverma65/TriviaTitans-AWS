@@ -19,6 +19,9 @@ const Quiz = () => {
   const [categoryName, setCategoryName] = useState(''); // New state for category name
   const countdownRef = useRef();
   const navigate = useNavigate();
+  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   const gamesId = localStorage.getItem('gameID');
   const teamName = localStorage.getItem('teamName');
@@ -35,6 +38,11 @@ const Quiz = () => {
 };
 
   useEffect(() => {
+
+    if (localStorage.getItem('token')) {
+            setIsLoggedIn(true);     
+    }
+
     const fetchData = async () => {
       try {
         const response = await axios.post(
@@ -115,6 +123,8 @@ const Quiz = () => {
   };
 
   const handleSubmitQuiz = async () => {
+    // Perform the actions before submitting the quiz
+   
     try {
       // Create the message body for the POST request
       const messageBody = {
@@ -123,17 +133,51 @@ const Quiz = () => {
         score: score
       };
 
+      await axios.post(
+        'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/createtable',
+        {
+          teamname: teamName,
+        }
+      );
+      console.log('Table created successfully with teamname:');
+  
+  
+      // Additional API 1: Update team table
+      await axios.post(
+        'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/updateteamtable',
+        {
+          teamName: teamName,
+          categoryName: categoryName, // Assuming you want to use the current category name
+          score: score,
+        }
+      );
+      console.log('Team table updated successfully');
       // Make the POST request to join the game
       const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/join-game'; // Replace with your actual API endpoint
       const response = await axios.post(apiEndpoint, messageBody);
+      
       // Handle the response if needed (optional)
       console.log('Game Stored: ', response.data);
-
+      
       // You can add any additional logic here, for example, showing a success message to the user.
     } catch (error) {
       // Handle the error if the POST request fails (optional)
-      console.error('Error storing score:', error);
+      if (error.response) {
+        //       // The request was made and the server responded with a status code
+        //       // that falls out of the range of 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              // The request was made but no response was received
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
     }
+    navigate('/leaderboard');
   }
 
   // const handleSubmitQuiz = async () => {
@@ -203,6 +247,8 @@ const Quiz = () => {
   const isLastQuestion = currentQuestionIndex === quizData.length - 1;
 
   return (
+    <>
+    {isLoggedIn?
     <div>
         <Header />
       <div className="quiz-container">
@@ -281,7 +327,8 @@ const Quiz = () => {
     <div style={chatboxStyle}>
                 <ChatRoom />
             </div>
-    </div>
+    </div> : null}
+    </>
   );
 };
 

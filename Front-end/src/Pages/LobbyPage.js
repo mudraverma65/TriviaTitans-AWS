@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GameDetails from '../Components/GameDetails';
 import Header from '../Components/Header';
-
+import ChatBot from '../Components/Chatbot';
 const LobbyPage = () => {
   const [category, setCategory] = useState('');
   const [difficulty, setDifficulty] = useState('');
@@ -82,6 +82,7 @@ const LobbyPage = () => {
   return (
     <div>
       <Header/>
+      <ChatBot/>
     <div className="container mt-4">
       <div className="row">
         <div className="col">
