@@ -12,10 +12,9 @@ const InviteTeamMember = ({ teamName }) => {
   const [usersSelected, setUsersSelected] = useState([]);
   const [alreadySelected, setAlreadySelected] = useState(false);
   const [users, setUsers] = useState([]);
-  const [team_name, setTeamName] = useState('');
 
   const currentUserEmail = localStorage.getItem('userEmail');
-  console.log(currentUserEmail)
+  // console.log(currentUserEmail)
   // const teamName = localStorage.getItem('teamName');
   // console.log(teamName)
   // setTeamName(teamName)

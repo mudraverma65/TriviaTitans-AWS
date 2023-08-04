@@ -12,23 +12,27 @@ const TeamDetails = () => {
   const [promoteButtonPressed, setPromoteButtonPressed] = useState(false);
   const [removeButtonPressed, setRemoveButtonPressed] = useState(false);
   const [saveChangesButtonPressed, setSaveChangesButtonPressed] = useState(false);
-
+  const [joinOrCreateMessage, setJoinOrCreateMessage] = useState('');
+  
   const[newAdmin, updateAdmin] = useState('');
   const[newMembers, updateMembers] = useState('');
 
   const currentUserEmail = localStorage.getItem('userEmail');
-  
   const [teamName, setTeamName] = useState('');
-
   const realTeamName = teamName.replace("_", " ")
+  
 
   useEffect(() => {
     const fetchUserTeamName = async () => {
       try {
         const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/get-team?emailID=${currentUserEmail}`);
-        console.log(response.data.body)
-        const teamname = response.data.body;
-        setTeamName(teamname)
+        if (response.status === 200) {
+          const teamname = response.data.body;
+          localStorage.setItem('teamName', teamname);
+          setTeamName(teamname);
+        } else {
+          setJoinOrCreateMessage('Join or Create a Team');
+        }
       } catch (error) {
         console.error('Error fetching user teamname:', error);
       }
@@ -37,7 +41,6 @@ const TeamDetails = () => {
   
     const fetchTeamDetails = async () => {
       try {
-        const team_n = teamName.replace(/\s/g, '_');
         const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/team-details?teamname=${teamName.replace(/\s/g, '_')}`);
         const { data } = response;
         // console.log(response.data.body);
@@ -191,11 +194,16 @@ const TeamDetails = () => {
     navigate('/join-game');
   };
 
+  const handleTeamStats = () => {
+    navigate('/team-stats');
+  };
+
 
   return (
     <div>
       <Header />
       <div className="container mt-4">
+      {joinOrCreateMessage && <p className="text-center">{joinOrCreateMessage}</p>}
         <div className="text-center mb-2">
           <button className="btn btn-primary" onClick={handleCreateTeam}>
             Create Team
@@ -239,6 +247,14 @@ const TeamDetails = () => {
           <button className="btn btn-primary" onClick={handleJoinGame}>
             Join Game
           </button> <span/>
+          {teamName && (
+            <>
+              <span />
+              <button className="btn btn-primary" onClick={handleTeamStats}>
+                View Stats
+              </button>
+            </>
+          )}
         </div>
         
       </div>
