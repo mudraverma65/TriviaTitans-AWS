@@ -6,6 +6,16 @@ import Chatroom from '../Components/ChatRoom';
 
 function JoinGame() {
 
+    const chatboxStyle = {
+        position: 'fixed',
+        bottom: '15px',
+        right: '15px',
+        width: '500px',
+        height: '500px',
+        // border: '1px solid #ccc', 
+        // overflow: 'hidden' 
+    };
+
     // useEffect(() => {
     //     const queryParameters = new URLSearchParams(window.location.hash.substring(1));
     //     const idTokenParam = queryParameters.get("id_token");
@@ -26,7 +36,10 @@ function JoinGame() {
         <>
             <Header />
             JoinGame
-            <Chatroom />
+            <div style={chatboxStyle}>
+                <Chatroom />
+            </div>
+
         </>
     )
 }

@@ -6,7 +6,7 @@ import { createSession, getUserPool } from '../Services/UserPool';
 import '../Styles/Authentication.css';
 import '../Styles/Verification.css';
 import { functionURL } from '../Constant/functionURL';
-
+import axios from "axios";
 
 function Verification() {
 
@@ -94,6 +94,34 @@ function Verification() {
     //     setIsAnswer3Valid(true)
     // }
 
+
+    const sendMail = async (e) => {
+    try {
+      await axios({
+        method: "post",
+        url: "https://5vknd5nsqk.execute-api.us-east-1.amazonaws.com/Dev/subscription", 
+        data: {
+          email: email,
+        },
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+        .then((res) => {
+          if (res.data.statusCode === 200) {
+            console.log("Subscribed Success")// change this path to the verify q and a.
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      // navigate(path.VERIFY_Q_AND_A);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
     const onSubmit = async () => {
         if (isUserVerified) {
             if (answer === '') {
@@ -120,11 +148,17 @@ function Verification() {
 
                         if (data.status === "Success") {
                             localStorage.setItem('verified', 'true');
-                            navigate('/profile');
+
+                            if(email==="admin@gmail.com"){
+                                localStorage.setItem("isAdmin","true");
+                                navigate('/admin/categories');
+                            }else{
+                                localStorage.setItem("isAdmin","false");
+                                navigate('/profile');
+                            }
                         } else {
                             alert(data.message);
-                        }
-                   
+                        }       
             }
         } else {
             if (answers.answer1 === '') {
@@ -166,6 +200,7 @@ function Verification() {
                         if (data.status === "Success") {
                             console.log(data);
                             localStorage.setItem('verified', 'true');
+                            sendMail();
                             navigate('/profile');
                         } else {
                             alert(data.message);
