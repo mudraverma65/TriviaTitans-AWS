@@ -139,7 +139,7 @@ const Quiz = () => {
           teamname: teamName,
         }
       );
-      console.log('Table created successfully with teamname: Raju');
+      console.log('Table created successfully with teamname:');
   
   
       // Additional API 1: Update team table
@@ -158,12 +158,26 @@ const Quiz = () => {
       
       // Handle the response if needed (optional)
       console.log('Game Stored: ', response.data);
-
+      
       // You can add any additional logic here, for example, showing a success message to the user.
     } catch (error) {
       // Handle the error if the POST request fails (optional)
-      console.error('Error storing score:', error);
+      if (error.response) {
+        //       // The request was made and the server responded with a status code
+        //       // that falls out of the range of 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              // The request was made but no response was received
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
     }
+    navigate('/leaderboard');
   }
 
   // const handleSubmitQuiz = async () => {
