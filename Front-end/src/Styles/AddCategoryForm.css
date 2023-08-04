@@ -5,7 +5,7 @@
     height: 100vh; /* Set the height to fill the entire viewport vertically */
 }
 .add-category-form {
-    max-width: 400px;
+    max-width: 80%;
     margin: 0 auto;
     border: 1px solid #ddd;
     border-radius: 8px;

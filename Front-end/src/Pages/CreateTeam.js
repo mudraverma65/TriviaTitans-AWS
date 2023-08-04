@@ -3,21 +3,27 @@ import '../Styles/styles.css'; // Import your custom styles.css or remove this l
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import CreateTeamName from '../Components/CreateTeamName';
 import InviteTeamMember from '../Components/InviteTeamMember';
+import Header from '../Components/Header';
 
 const CreateTeam = () => {
 
 //   const [teamName, setTeamName] = useState('');
 //   localStorage.setItem('currentUserEmail', 'mudraverma65@gmail.com');
-  const currentUserEmail = localStorage.getItem('userEmail');
+  // const currentUserEmail = localStorage.getItem('userEmail');
 
   return (
+    <div>
+      <Header/>
+
+    
     <div className="container">
       <div className="card mt-5">
         <div className="card-body">
           <CreateTeamName/>
-          <InviteTeamMember/>
+          {/* <InviteTeamMember/> */}
         </div>
       </div>
+    </div>
     </div>
   );
 };

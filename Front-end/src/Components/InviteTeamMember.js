@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-const InviteTeamMember = () => {
+const InviteTeamMember = ({ teamName }) => {
   const navigate = useNavigate();
   const [selectedUser, setSelectedUser] = useState('');
   const [userSelected, setUserSelected] = useState(false);
@@ -12,11 +12,13 @@ const InviteTeamMember = () => {
   const [usersSelected, setUsersSelected] = useState([]);
   const [alreadySelected, setAlreadySelected] = useState(false);
   const [users, setUsers] = useState([]);
+  const [team_name, setTeamName] = useState('');
 
   const currentUserEmail = localStorage.getItem('userEmail');
   console.log(currentUserEmail)
-  const teamName = localStorage.getItem('teamName');
-  console.log(teamName)
+  // const teamName = localStorage.getItem('teamName');
+  // console.log(teamName)
+  // setTeamName(teamName)
 
   const fetchUsers = async () => {
     try {
@@ -31,6 +33,9 @@ const InviteTeamMember = () => {
   };
 
   const handleInviteUsers = async () => {
+    // const teamName = localStorage.getItem('teamName');
+    // setTeamName(teamName)
+    // console.log(team_name)
     try {
       if (usersSelected.length === 0) {
         return;

@@ -17,9 +17,7 @@ const TeamDetails = () => {
   const[newMembers, updateMembers] = useState('');
 
   const currentUserEmail = localStorage.getItem('userEmail');
-  console.log(currentUserEmail)
-  // const currentUserEmail = "mudraverma65@gmail.com"
-  // const teamName = localStorage.getItem('teamName');
+  
   const [teamName, setTeamName] = useState('');
 
   const realTeamName = teamName.replace("_", " ")
@@ -30,19 +28,11 @@ const TeamDetails = () => {
         const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/get-team?emailID=${currentUserEmail}`);
         console.log(response.data.body)
         const teamname = response.data.body;
-        console.log(teamname)
         setTeamName(teamname)
-        // if (teamname) {
-        //   setTeamName(teamname);
-        // } else {
-        //   console.error('Team name is empty or not available.');
-        // }
       } catch (error) {
         console.error('Error fetching user teamname:', error);
       }
     };
-
-    console.log(teamName)
     
   
     const fetchTeamDetails = async () => {
@@ -50,7 +40,7 @@ const TeamDetails = () => {
         const team_n = teamName.replace(/\s/g, '_');
         const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/team-details?teamname=${teamName.replace(/\s/g, '_')}`);
         const { data } = response;
-        console.log(response.data.body);
+        // console.log(response.data.body);
         setTeamMembers(data.body.members);
         updateMembers(data.body.members);
         setAdmin(data.body.admin);
@@ -58,8 +48,6 @@ const TeamDetails = () => {
         console.error(error);
       }
     };
-
-    console.log(teamMembers)
   
     fetchUserTeamName();
     fetchTeamDetails();
@@ -96,8 +84,6 @@ const TeamDetails = () => {
     setSaveChangesButtonPressed(false);
   };
 
-  // console.log(newMembers)
-
   const handleLeaveTeam = async () => {
     // Check if the logged-in user is the admin
     if (currentUserEmail === adminEmailID) {
@@ -115,24 +101,38 @@ const TeamDetails = () => {
       const messageBody = {
         teamname: realTeamName,
         admin: adminEmailID,
-        members: newMembers, // Updated members list without the removed member
+        members: newMembers,
+        deleteMember: currentUserEmail // Updated members list without the removed member
       };
+
+      if (newAdmin !== adminEmailID) {
+        messageBody.admin = newAdmin;
+      }
+
+      if (newAdmin !== adminEmailID || JSON.stringify(newMembers) !== JSON.stringify(teamMembers)) {
+        const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/update-team'; // Replace with your actual API endpoint
+        const response = await axios.post(apiEndpoint, messageBody);
   
-      const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/update-team'; // Replace with your actual API endpoint
-      const response = await axios.post(apiEndpoint, messageBody);
+        console.log('API response:', response.data);
+        setSaveChangesButtonPressed(true);
+      } else {
+        // Data hasn't changed, do not make the API call
+        console.log('No changes to save.');
+      }
   
-      console.log('API response:', response.data);
-      setSaveChangesButtonPressed(true);
+      // const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/update-team'; // Replace with your actual API endpoint
+      // const response = await axios.post(apiEndpoint, messageBody);
+  
+      // console.log('API response:', response.data);
+      // setSaveChangesButtonPressed(true);
 
       setTimeout(() => {
         window.location.reload();
-        navigate('/');
       }, 3000);
       
     } catch (error) {
       console.error(error);
     }
-    // await handleSaveDetails();
     
   };
 
@@ -155,7 +155,7 @@ const TeamDetails = () => {
         messageBody.members = newMembers;
       }
 
-      console.log(messageBody)
+      // console.log(messageBody)
   
       // Make the POST request to the API with the message body if there are any changes
       if (newAdmin !== adminEmailID || JSON.stringify(newMembers) !== JSON.stringify(teamMembers)) {
