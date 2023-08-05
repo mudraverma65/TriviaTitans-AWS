@@ -2,16 +2,17 @@ import boto3
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('Team')
+user_table = dynamodb.Table('User')  # Add the 'User' table
 
 def lambda_handler(event, context):
     try:
-        teamname = event['teamname']
-        admin = event['admin']
-        members = event['members']
+        team_name = event['teamname']
+        admin = event.get('admin')
+        delete_member = event.get('deleteMember')  # Check if 'deleteMember' is present in the event
         
         response = table.get_item(
             Key={
-                'TeamName': teamname
+                'TeamName': team_name
             }
         )
         if 'Item' not in response:
@@ -20,28 +21,37 @@ def lambda_handler(event, context):
                 'body': {'error': 'Team not found.'}
             }
 
-        # Update the item in DynamoDB
-        response = table.update_item(
-            Key={
-                'TeamName': teamname
-            },
-            UpdateExpression='SET #adminAttr = :adminValue, #membersAttr = :membersValue',
-            ExpressionAttributeNames={
-                '#adminAttr': 'Admin',
-                '#membersAttr': 'Members'
-            },
-            ExpressionAttributeValues={
-                ':adminValue': admin,
-                ':membersValue': members
-            },
-            ReturnValues='ALL_NEW'  # Return the updated attributes of the item
-        )
+        # Update Admin
+        if admin:
+            table.update_item(
+                Key={'TeamName': team_name},
+                UpdateExpression='SET #adm = :adminValue',
+                ExpressionAttributeNames={
+                    '#adm': 'Admin'
+                },
+                ExpressionAttributeValues={
+                    ':adminValue': admin
+                }
+            )
 
-        # Return the updated item
+        # Update Member
+        if delete_member:
+            table.update_item(
+                Key={'TeamName': team_name},
+                UpdateExpression='DELETE Members :member',
+                ExpressionAttributeValues={':member': {delete_member}}
+            )
+
+            user_table.update_item(
+                Key={'emailID': delete_member},
+                UpdateExpression='REMOVE teamname'
+            )
+        
         return {
             'statusCode': 200,
-            'body': response['Attributes']
+            'body': 'Team Updated'
         }
+
     except Exception as e:
         print(e)
         return {
