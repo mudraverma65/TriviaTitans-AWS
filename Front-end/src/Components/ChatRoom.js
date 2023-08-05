@@ -8,16 +8,17 @@ function ChatRoom(){
 
     const ENTER_KEY_CODE = 13;
 
-    const chatMessageDto = {
-        user: 'naveen',
-        message: 'this is naveen'
-    }
+    // const chatMessageDto = {
+    //     user: 'naveen',
+    //     message: 'this is naveen'
+    // }
     const name = localStorage.getItem('userName');
+    const teamName = localStorage.getItem('teamName');
     console.log(name);
     const scrollBottomRef = useRef(null);
     const webSocket = useRef(null);
     const [chatMessages, setChatMessages] = useState([]);
-    const [user, setUser] = useState('');
+    // const [user, setUser] = useState('');
     const [message, setMessage] = useState('');
 
     useEffect(() => {
@@ -28,8 +29,8 @@ function ChatRoom(){
                 console.log("Sending team name to socket");
                 const message = {
                     action: "setTeamName",
-                    name: "naveen",
-                    teamID: "team1"
+                    name: name,
+                    teamID: teamName
                   };
                   webSocket.current.send(JSON.stringify(message));
                 };
@@ -91,7 +92,7 @@ function ChatRoom(){
             const payload = {
                 name: name,
                 message: message,
-                teamID: "team1",
+                teamID: teamName,
                 action: "sendMessage",
               };
             webSocket.current.send(JSON.stringify(payload));

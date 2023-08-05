@@ -7,8 +7,6 @@ import Verification from './Pages/Verification';
 // import { Amplify } from 'aws-amplify';
 import { useEffect } from 'react';
 import Leaderboard from './Pages/Leaderboard';
-import UserProfile from './Pages/Profilepage';
-import JoinGame from './Pages/Joingame';
 import Quiz from './Pages/Quiz';
 // import TeamDetails from './Pages/TeamDetails';
 import CreateTeam from './Pages/CreateTeam';
@@ -50,8 +48,6 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/*" element={<Home />} />
-        <Route path='/UserProfile' element={<UserProfile /> } />
-        <Route path='/joingame' element={<JoinGame /> } />
         <Route path='/quiz' element={<Quiz />} />
         <Route path='/teams' element={<TeamDetails />} />
         {/**

@@ -1,22 +1,24 @@
 
-FROM --platform=amd64 node:18 as build
+# FROM --platform=amd64 node:18 as build
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY package*.json ./
+# COPY package*.json ./
 
-RUN npm install
+# RUN npm install
 
-COPY . .
+# COPY . .
 
-RUN npm run build -- --configuration=production
+# RUN npm run build -- --configuration=production
 
 
 FROM --platform=amd64 nginx:1.25-alpine
 
-RUN rm -rf /usr/share/nginx/html/*
+# RUN rm -rf /usr/share/nginx/html/*
 
-COPY --from=build /app/build /usr/share/nginx/html
+# COPY --from=build /app/build /usr/share/nginx/html
+
+COPY ./build /usr/share/nginx/html
 
 EXPOSE 80
 

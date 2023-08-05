@@ -18,10 +18,9 @@ function Home() {
         const token = localStorage.getItem('token');
         const idToken = localStorage.getItem('idToken');
         if (token && idToken && verified !== 'true') {
-            window.location.href = 'http://localhost:3000/verify';
-                // navigate("/verify")
+            // window.location.href = 'http://localhost:3000/verify';
+                navigate("/verify")
             // navigate("https://frontend-image-hl7c6ytlmq-uc.a.run.app/verify")
-
         }
     }, [])
 

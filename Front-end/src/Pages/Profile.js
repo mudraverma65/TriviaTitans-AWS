@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Components/Header';
 import '../Styles/Profile.css';
-import { Avatar, Typography, Divider, Button, Select, Input } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Avatar, Divider, Button, Input } from 'antd';
+// import { UploadOutlined } from '@ant-design/icons';
 import CircleUpload from '../Components/CircleUpload';
-import ProfilePicture from '../Components/ProfilePicture';
+// import ProfilePicture from '../Components/ProfilePicture';
 import axios from 'axios';
 import Card from 'antd/es/card/Card';
 import ChatBot from '../Components/Chatbot';
@@ -15,8 +15,6 @@ import { getCurrentUser, updateUserAttributes } from "../Services/auth"
 export default function UserProfile() {
   const [user, setUser] = useState({})
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState(user ? user.phone_number : '');
   const [gender, setGender] = useState(user ? user.gender : '');
   const [address, setAddress] = useState(user ? user.address : '');
@@ -26,35 +24,75 @@ export default function UserProfile() {
   const [editable, setEditable] = useState(false);
   const [editProfilePicButton, setEditProfilePicButton] = useState(false);
   const [profilePic, setProfilePic] = useState('');
+  const [teamname, setTeamName] = useState('');
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [ numberOfGamesPlayed, setNumberOfGamesPlayed ] = useState('');
+  const [totalScore, setTotalscore] = useState('');
+
+  useEffect(() => {
+    const fetchUserTeamName = async () => {
+      try {
+        const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/get-team?emailID=${user.email}`);
+        if (response.status === 200) {
+          const teamname = response.data.body;
+          console.log(teamname);
+          setTeamName(teamname);
+        }
+      } catch (error) {
+        console.error('Error fetching user teamname:', error);
+        // setTeamName('NOT A PART OF TEAM YET!!!!');
+      }
+    };
+
+
+    const fetchTeamDetails = async () => {
+      try {
+        // const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/team-details?teamname=${teamname.replace(/\s/g, '_')}`);
+        const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/team-stats?TeamName=${teamname.replace(/\s/g, '_')}`);
+
+        const { data } = response;
+        console.log(data);
+        // console.log(response.data.body);
+        setTeamMembers(data.body.Members);
+        setNumberOfGamesPlayed(data.body.NumberOfGamesPlayed);
+        setTotalscore(data.body.TotalScore);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUserTeamName();
+    fetchTeamDetails();
+  }, [user.email, teamname]);
 
 
   useEffect(() => {
     // Fetch data from DynamoDB using the email
     const fetchProfilePicData = async () => {
 
-  axios.get("https://xqip2gdlbl6gadeqekbubaqhjm0mvvwh.lambda-url.us-east-1.on.aws/?email="+user.email)
-  .then(response => {
-    // Handle the response data
-    console.log('sdfsdfsdf', response.data);
-    if (response.status === 200) {
-    setProfilePic(response.data.profile_pic_base64);
-    }
-    else{
-      setProfilePic(null);
+      axios.get("https://xqip2gdlbl6gadeqekbubaqhjm0mvvwh.lambda-url.us-east-1.on.aws/?email=" + user.email)
+        .then(response => {
+          // Handle the response data
+          console.log('sdfsdfsdf', response.data);
+          if (response.status === 200) {
+            setProfilePic(response.data.profile_pic_base64);
+          }
+          else {
+            setProfilePic(null);
+          }
+
+        })
+        .catch(error => {
+          // Handle errors
+          console.error('Error:', error);
+          setProfilePic(null);
+        });
+    };
+
+    if (user) {
+      fetchProfilePicData();
     }
 
-  })
-  .catch(error => {
-    // Handle errors
-    console.error('Error:', error);
-    setProfilePic(null);
-  });
-};
-
-    if(user){
- fetchProfilePicData();
-    }
-   
   }, [user.email]);
 
   // Handle profile picture change
@@ -162,7 +200,7 @@ export default function UserProfile() {
         setUser(user)
         localStorage.setItem('userEmail', user.email);
         localStorage.setItem('userName', user.name);
-        
+
 
         setGender(user ? user.gender : '');
         setPhoneNumber(user ? user.phone_number : '');
@@ -186,7 +224,7 @@ export default function UserProfile() {
   return (
     <>
       <Header />
-      <ChatBot/>
+      <ChatBot />
       {isLoggedIn ? (
         <div>
           {user ? (
@@ -303,48 +341,43 @@ export default function UserProfile() {
                     </div>
                   </div>
                   <Divider />
-                  <div style={{}}></div>
-                  <div style={{ marginTop: '24px' }}>
-                    <h3>User Statistics</h3>
-                    <p>Games Played: 12 </p>
-                    <p>Win/Loss Ratio: 11/12</p>
-                    <p>Total Points Earned: 220</p>
-                  </div>
-                  <Divider />
 
                   <div>
                     <div style={{ marginTop: '24px' }}>
-                      <h3>Teams</h3>
-                      <ol>
-                        <li>
-                          HIMANSHU
-                        </li>
-                        <li>
-                          ATHENA
-                        </li>
-                      </ol>
+                    {teamname === 'Join or Create a Team' ?(<h3 style={{ color: 'red' }} > Team Name: {teamname}</h3>) :(<h3>Team Name: {teamname}</h3>) }
+                      
+                      {teamname === 'Join or Create a Team' ? (
+                        <p style={{ color: 'red' }} >No teamMembers available.</p>
+                      ) : (
+                        <ol>
+                          {teamMembers?.map((teamMember, index) => (
+                            <li key={index}>{teamMember}</li>
+                          ))}
+                        </ol>
+                      )}
                     </div>
                   </div>
                   <Divider />
 
                   <div style={{ marginTop: '24px' }}>
-                    <h3>Achievements</h3>
-                    <p>Highest Score: 90</p>
-                    <p>Most Wins: 11</p>
-                    <p>Total Points: 220</p>
+                    <h3>Team Achievements</h3>
+                    {numberOfGamesPlayed && totalScore ? (
+                      <div>
+                          <p>Total Games Played: {numberOfGamesPlayed}</p>
+                          <p>Total Score: {totalScore}</p>
+                        </div>
+                    ): (
+                    <div>
+                      <p style={{ color: 'red' }}>Total Games Played: 0 Games played</p>
+                      <p style={{ color: 'red' }} >Total Score: 0 points </p>
+                    </div>
+                    )
+                    
+                  }
+
                   </div>
                   <Divider />
 
-
-                  <div style={{ marginTop: '24px' }}>
-                    <h3>Team Members</h3>
-                    <p>Team Name: HeartPirates</p>
-                    <p>Members: 4</p>
-                    <p>1. John Law</p>
-                    <p>2. Ethan Law</p>
-                    <p>3. Mike Law</p>
-                    <p>4. Rob Law</p>
-                  </div>
                   <Divider />
                 </Card>
               </div>
@@ -361,7 +394,7 @@ export default function UserProfile() {
           <p className='error-message'>You are not Logged In!!</p>
           <a
             className='loginFirst'
-            href='https://titans.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=5cm5p1n8m11vvclk312lifshs1&redirect_uri=http://localhost:3000'
+            href='https://titans.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=5cm5p1n8m11vvclk312lifshs1&redirect_uri=https://serverless-bco7bjmf2q-uc.a.run.app'
             onClick={() => navigate('/logout')}
           >
             Login
