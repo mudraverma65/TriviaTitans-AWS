@@ -8,6 +8,8 @@ def lambda_handler(event, context):
     try:
         # Get the team name from the event
         teamname = event['TeamName']
+        
+        teamname = teamname.replace('_', ' ')
 
         # Retrieve the team details from the DynamoDB table
         team_details = get_team_details(teamname)
