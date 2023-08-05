@@ -10,7 +10,7 @@ import Leaderboard from './Pages/Leaderboard';
 import UserProfile from './Pages/Profilepage';
 import JoinGame from './Pages/Joingame';
 import Quiz from './Pages/Quiz';
-import TeamDetails from './Pages/TeamDetails';
+// import TeamDetails from './Pages/TeamDetails';
 import CreateTeam from './Pages/CreateTeam';
 import LobbyPage from './Pages/LobbyPage';
 import AddCategoryForm from "./Pages/AddCategoryForm";
@@ -19,6 +19,10 @@ import AddQuestionsForm from "./Pages/AddQuestionsForm";
 import FilteredGames from "./Pages/FilteredGames";
 import FilteredQuestions from "./Pages/FilteredQuestions";
 import ShowAllCategories from "./Pages/ShowAllCategories";
+import TeamStats from './Pages/TeamStats';
+
+
+import TeamDetails from './Pages/TeamDe';
 function App() {
 
   useEffect(() => {
@@ -50,8 +54,12 @@ function App() {
         <Route path='/joingame' element={<JoinGame /> } />
         <Route path='/quiz' element={<Quiz />} />
         <Route path='/teams' element={<TeamDetails />} />
+        {/**
+         * Mudra's routes
+         * */}
         <Route path='/create-team' element={<CreateTeam />} />
         <Route path='/join-game' element={<LobbyPage />} />
+        <Route path='/team-stats' element={<TeamStats />} />
         {/**
          * Trusha's routes
          * */}

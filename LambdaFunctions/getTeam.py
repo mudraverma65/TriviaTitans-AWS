@@ -16,7 +16,7 @@ def lambda_handler(event, context):
         if not teamname:
             return {
                 'statusCode': 404,
-                'body':'Teamname not found for the provided emailID.'
+                'body':'Join or Create a Team'
             }
 
         return {

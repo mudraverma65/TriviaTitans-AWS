@@ -1,8 +1,7 @@
-import React, { useState} from 'react';
+import React from 'react';
 import '../Styles/styles.css'; // Import your custom styles.css or remove this line if not needed
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import CreateTeamName from '../Components/CreateTeamName';
-import InviteTeamMember from '../Components/InviteTeamMember';
 import Header from '../Components/Header';
 
 const CreateTeam = () => {

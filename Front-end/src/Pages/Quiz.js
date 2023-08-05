@@ -122,124 +122,104 @@ const Quiz = () => {
     }
   };
 
+  // const handleSubmitQuiz = async () => {
+  //   try {
+  //     // Create the message body for the POST request
+  //     const messageBody = {
+  //       teamname: teamName,
+  //       gameID: gamesId,
+  //       score: score
+  //     };
+
+  //     // Make the POST request to join the game
+  //     const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/join-game'; // Replace with your actual API endpoint
+  //     const response = await axios.post(apiEndpoint, messageBody);
+  //     // Handle the response if needed (optional)
+  //     console.log('Game Stored: ', response.data);
+
+  //     // You can add any additional logic here, for example, showing a success message to the user.
+  //   } catch (error) {
+  //     // Handle the error if the POST request fails (optional)
+  //     console.error('Error storing score:', error);
+  //   }
+  // }
+
   const handleSubmitQuiz = async () => {
     // Perform the actions before submitting the quiz
-   
     try {
-      // Create the message body for the POST request
-      const messageBody = {
-        teamname: teamName,
-        gameID: gamesId,
-        score: score
-      };
-
+      // API 1: Create table with teamname
       await axios.post(
         'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/createtable',
         {
-          teamname: teamName,
+          teamname: 'Team1',
         }
       );
-      console.log('Table created successfully with teamname:');
+      console.log('Table created successfully with teamname: Raju');
   
+      // API 2: Create user score table with playerid
+      await axios.post(
+        'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/createuserscoretable',
+        {
+          playerid: 'Pari',
+        }
+      );
+      console.log('User score table created successfully with playerid: ');
   
       // Additional API 1: Update team table
       await axios.post(
         'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/updateteamtable',
         {
-          teamName: teamName,
+          teamName: 'Team1',
           categoryName: categoryName, // Assuming you want to use the current category name
           score: score,
         }
       );
       console.log('Team table updated successfully');
-      // Make the POST request to join the game
-      const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/join-game'; // Replace with your actual API endpoint
-      const response = await axios.post(apiEndpoint, messageBody);
-      
-      // Handle the response if needed (optional)
-      console.log('Game Stored: ', response.data);
-      
-      // You can add any additional logic here, for example, showing a success message to the user.
-    } catch (error) {
-      // Handle the error if the POST request fails (optional)
-      if (error.response) {
-        //       // The request was made and the server responded with a status code
-        //       // that falls out of the range of 2xx
-              console.log(error.response.data);
-              console.log(error.response.status);
-              console.log(error.response.headers);
-            } else if (error.request) {
-              // The request was made but no response was received
-              console.log(error.request);
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              console.log('Error', error.message);
-            }
-            console.log(error.config);
-    }
-    navigate('/leaderboard');
-  }
+  
+      // Additional API 2: Update user score table
+      await axios.post(
+        'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/updateusersoretable',
+        {
+          playerId: 'Pari',
+          categoryName: categoryName, // Assuming you want to use the current category name
+          score: score,
+        }
+      );
 
-  // const handleSubmitQuiz = async () => {
-  //   // Perform the actions before submitting the quiz
-  //   try {
-  //     // API 1: Create table with teamname
-  //     await axios.post(
-  //       'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/createtable',
-  //       {
-  //         teamname: 'Team1',
-  //       }
-  //     );
-  //     console.log('Table created successfully with teamname: Raju');
-  
-  //     // API 2: Create user score table with playerid
-  //     await axios.post(
-  //       'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/createuserscoretable',
-  //       {
-  //         playerid: 'Pari',
-  //       }
-  //     );
-  //     console.log('User score table created successfully with playerid: ');
-  
-  //     // Additional API 1: Update team table
-  //     await axios.post(
-  //       'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/updateteamtable',
-  //       {
-  //         teamName: 'Team1',
-  //         categoryName: categoryName, // Assuming you want to use the current category name
-  //         score: score,
-  //       }
-  //     );
-  //     console.log('Team table updated successfully');
-  
-  //     // Additional API 2: Update user score table
-  //     await axios.post(
-  //       'https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/updateusersoretable',
-  //       {
-  //         playerId: 'Pari',
-  //         categoryName: categoryName, // Assuming you want to use the current category name
-  //         score: score,
-  //       }
-  //     );
-  //     console.log('User score table updated successfully');
-  //   } catch (error) {
-  //     if (error.response) {
-  //       // The request was made and the server responded with a status code
-  //       // that falls out of the range of 2xx
-  //       console.log(error.response.data);
-  //       console.log(error.response.status);
-  //       console.log(error.response.headers);
-  //     } else if (error.request) {
-  //       // The request was made but no response was received
-  //       console.log(error.request);
-  //     } else {
-  //       // Something happened in setting up the request that triggered an Error
-  //       console.log('Error', error.message);
-  //     }
-  //     console.log(error.config);
-  //   }
-  //   navigate('/leaderboard');
-  // };
+        //Store Game Stats -- @Mudra
+
+        const messageBody = {
+          teamname: teamName,
+          gameID: gamesId,
+          score: score
+        };
+        // Make the POST request to join the game
+        const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/join-game'; // Replace with your actual API endpoint
+        const response = await axios.post(apiEndpoint, messageBody);
+        // Handle the response if needed (optional)
+        console.log('Game Stored: ', response.data);
+
+
+
+      console.log('User score table updated successfully');
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    }
+    navigate('/team-stats');
+  };
   
   
 

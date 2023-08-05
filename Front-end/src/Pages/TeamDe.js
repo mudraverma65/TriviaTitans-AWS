@@ -3,19 +3,13 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Components/Header';
-import ChatBot from '../Components/Chatbot';
+
 const TeamDetails = () => {
   const navigate = useNavigate();
   const [teamMembers, setTeamMembers] = useState([]); 
   const [adminEmailID, setAdmin] = useState('');
 
-  const [promoteButtonPressed, setPromoteButtonPressed] = useState(false);
-  const [removeButtonPressed, setRemoveButtonPressed] = useState(false);
-  const [saveChangesButtonPressed, setSaveChangesButtonPressed] = useState(false);
   const [joinOrCreateMessage, setJoinOrCreateMessage] = useState('');
-  
-  const[newAdmin, updateAdmin] = useState('');
-  const[newMembers, updateMembers] = useState('');
 
   const currentUserEmail = localStorage.getItem('userEmail');
   const [teamName, setTeamName] = useState('');
@@ -45,7 +39,6 @@ const TeamDetails = () => {
         const { data } = response;
         // console.log(response.data.body);
         setTeamMembers(data.body.members);
-        updateMembers(data.body.members);
         setAdmin(data.body.admin);
       } catch (error) {
         console.error(error);
@@ -57,34 +50,51 @@ const TeamDetails = () => {
   }, [currentUserEmail, teamName]);
   
 
-  const handlePromoteAdmin = (emailID) => {
+  const handlePromoteAdmin = async (emailID) => {
     // Check if the emailID is the admin emailID
     if (emailID === adminEmailID) {
       alert('You cannot promote the admin.');
       return;
     }
-    updateAdmin(emailID);
-    setPromoteButtonPressed(true);
-    setRemoveButtonPressed(false);
-    setSaveChangesButtonPressed(false);
+    try {
+        const messageBody = {
+            teamname: realTeamName,
+            admin: emailID
+          };
+
+        const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/update-team'; // Replace with your actual API endpoint
+        const response = await axios.post(apiEndpoint, messageBody);
+        console.log('API response:', response.data);
+        setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+      } catch (error) {
+        console.error(error);
+      }
   };
 
-  const handleRemoveMember = (emailID) => {
+  const handleRemoveMember = async (emailID) => {
     // Check if the emailID is the admin emailID
     if (emailID === adminEmailID) {
       alert('You cannot remove the admin.');
       return;
     }
 
-    // Remove the member from the teamMembers state
-    updateMembers((prevMembers) =>
-      prevMembers.filter((member) => member!== emailID)
-    );
+    try {
+        const messageBody = {
+            teamname: realTeamName,
+            deleteMember: emailID
+          };
 
-    
-    setPromoteButtonPressed(false);
-    setRemoveButtonPressed(true);
-    setSaveChangesButtonPressed(false);
+        const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/update-team'; // Replace with your actual API endpoint
+        const response = await axios.post(apiEndpoint, messageBody);
+        console.log('API response:', response.data);
+        setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+      } catch (error) {
+        console.error(error);
+      }
   };
 
   const handleLeaveTeam = async () => {
@@ -94,92 +104,24 @@ const TeamDetails = () => {
       return;
     }
 
-    // Remove the logged-in user from the teamMembers state
-    updateMembers((prevMembers) =>
-      prevMembers.filter((member) => member!== currentUserEmail)
-    );
-
     try {
-      // Create the message body without the member to be removed
-      const messageBody = {
-        teamname: realTeamName,
-        admin: adminEmailID,
-        members: newMembers,
-        deleteMember: currentUserEmail // Updated members list without the removed member
-      };
+        const messageBody = {
+            teamname: realTeamName,
+            deleteMember: currentUserEmail
+          };
 
-      if (newAdmin !== adminEmailID) {
-        messageBody.admin = newAdmin;
-      }
-
-      if (newAdmin !== adminEmailID || JSON.stringify(newMembers) !== JSON.stringify(teamMembers)) {
         const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/update-team'; // Replace with your actual API endpoint
         const response = await axios.post(apiEndpoint, messageBody);
-  
         console.log('API response:', response.data);
-        setSaveChangesButtonPressed(true);
-      } else {
-        // Data hasn't changed, do not make the API call
-        console.log('No changes to save.');
+        setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+      } catch (error) {
+        console.error(error);
       }
-  
-      // const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/update-team'; // Replace with your actual API endpoint
-      // const response = await axios.post(apiEndpoint, messageBody);
-  
-      // console.log('API response:', response.data);
-      // setSaveChangesButtonPressed(true);
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-      
-    } catch (error) {
-      console.error(error);
-    }
-    
   };
 
-  const handleSaveDetails = async () => {
-    try {
-      // Create the message body with the original data
-      const messageBody = {
-        teamname: realTeamName,
-        admin: adminEmailID,
-        members: teamMembers,
-      };
-  
-      // Add the newAdmin to the message body only if it's different from the original data
-      if (newAdmin !== adminEmailID) {
-        messageBody.admin = newAdmin;
-      }
-  
-      // Add the newMembers to the message body only if they are different from the original data
-      if (JSON.stringify(newMembers) !== JSON.stringify(teamMembers)) {
-        messageBody.members = newMembers;
-      }
 
-      // console.log(messageBody)
-  
-      // Make the POST request to the API with the message body if there are any changes
-      if (newAdmin !== adminEmailID || JSON.stringify(newMembers) !== JSON.stringify(teamMembers)) {
-        const apiEndpoint = 'https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/update-team'; // Replace with your actual API endpoint
-        const response = await axios.post(apiEndpoint, messageBody);
-  
-        console.log('API response:', response.data);
-        setSaveChangesButtonPressed(true);
-      } else {
-        // Data hasn't changed, do not make the API call
-        console.log('No changes to save.');
-      }
-  
-      // Reload the page after 1 second
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleCreateTeam = () => {
     navigate('/create-team');
@@ -202,7 +144,6 @@ const TeamDetails = () => {
   return (
     <div>
       <Header />
-      <ChatBot />
       <div className="container mt-4">
       {joinOrCreateMessage && <p className="text-center">{joinOrCreateMessage}</p>}
         <div className="text-center mb-2">
@@ -222,16 +163,15 @@ const TeamDetails = () => {
               {adminEmailID === currentUserEmail && (
                 <div>
                   <button
-                    className={`btn ${promoteButtonPressed ? 'btn-success' : 'btn-primary'} mr-2`}
+                    className='btn btn-success'
                     onClick={() => handlePromoteAdmin(member)}
                   >
-                    {promoteButtonPressed ? 'Admin Promoted' : 'Promote to Admin'}
-                  </button>
+                    Promote to Admin
+                  </button> <span/> 
                   <button
-                    className={`btn ${removeButtonPressed ? 'btn-success' : 'btn-danger'}`}
+                    className='btn btn-danger'
                     onClick={() => handleRemoveMember(member)}
-                  >
-                    {removeButtonPressed ? 'Member Removed' : 'Remove Member'}
+                  >Remove Member
                   </button>
                 </div>
               )}
@@ -241,9 +181,6 @@ const TeamDetails = () => {
         <div className="text-center mt-4">
           <button className="btn btn-warning" onClick={handleLeaveTeam}>
             Leave Team
-          </button> <span/>
-          <button className={`btn ${saveChangesButtonPressed ? 'btn-success' : 'btn-warning'}`} onClick={handleSaveDetails}>
-            {saveChangesButtonPressed ? 'Changes Saved' : 'Save Changes'}
           </button> <span/>
           <button className="btn btn-primary" onClick={handleJoinGame}>
             Join Game
