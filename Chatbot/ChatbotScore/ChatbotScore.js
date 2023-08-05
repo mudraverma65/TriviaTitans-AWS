@@ -1,69 +1,69 @@
-const axios = require('axios');
+const request = require('axios');
 
-exports.handler = async (event) => {
-    const intent = event.interpretations[0].intent;
-    const intentName = intent.name;
-    const slots = intent.slots;
-    const teamName = slots.teamname;
+exports.handler = async (inputEvent) => {
+    const identifiedIntent = inputEvent.interpretations[0].intent;
+    const intentId = identifiedIntent.name;
+    const slotSet = identifiedIntent.slots;
+    const groupTag = slotSet.teamname;
 
-    const dialogAction = {};
+    const dialogueInstructions = {};
 
-    if (!teamName) {
-        dialogAction.type = 'ElicitSlot';
-        dialogAction.slotToElicit = 'teamname';  
-        dialogAction.intentName = intentName;
-        dialogAction.slots = slots;
+    if (!groupTag) {
+        dialogueInstructions.type = 'ElicitSlot';
+        dialogueInstructions.slotToElicit = 'teamname';  
+        dialogueInstructions.intentName = intentId;
+        dialogueInstructions.slots = slotSet;
     } else {
-        dialogAction.type = 'Close';
+        dialogueInstructions.type = 'Close';
     }
 
-    const intentResponse = {
-        name: intentName
+    const intentReply = {
+        name: intentId
     };
 
-    if (!teamName) {
-        intentResponse.confirmationState = 'None';
-        intentResponse.state = 'InProgress';
+    if (!groupTag) {
+        intentReply.confirmationState = 'None';
+        intentReply.state = 'InProgress';
     } else {
-        intentResponse.confirmationState = 'Confirmed';
-        intentResponse.state = 'Fulfilled';
+        intentReply.confirmationState = 'Confirmed';
+        intentReply.state = 'Fulfilled';
     }
 
-    const messages = [];
+    const messageArray = [];
 
-    if (!teamName) {
-        messages.push({
+    if (!groupTag) {
+        messageArray.push({
             contentType: 'PlainText',
-            content: 'Please provide the name of the team.'
+            content: 'We need the name of the team, please.'
         });
     } else {
-        const teamNameValue = teamName.value.originalValue;
+        const groupTagValue = groupTag.value.originalValue;
 
-        const response = await axios.post("https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/createtable", {
-            teamname: teamNameValue
+        const apiResponse = await request.post("https://d6x5p3bllk.execute-api.us-east-1.amazonaws.com/prod/createtable", {
+            teamname: groupTagValue
         });
 
-        const team = response.data;
+        const teamData = apiResponse.data;
 
-        if (!team) {
-            messages.push({
+        if (!teamData) {
+            messageArray.push({
                 contentType: 'PlainText',
-                content: `No scores found for the team.`
+                content: `We couldn't find scores for the team.`
             });
         } else {
-            var message = `Score for team ${teamNameValue} is ${team.totalScore} points.`;
-            messages.push({
+            var scoreMessage = `Points for team ${groupTagValue} are ${teamData.totalScore}.`;
+            messageArray.push({
                 contentType: 'PlainText',
-                content: message
+                content: scoreMessage
             });
         }
     }
 
     return {
         sessionState: {
-            dialogAction,
-            intent: intentResponse
+            dialogAction: dialogueInstructions,
+            intent: intentReply
         },
-        messages: messages
+        messages: messageArray
     };
 };
