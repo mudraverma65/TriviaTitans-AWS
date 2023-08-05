@@ -19,6 +19,9 @@ const Quiz = () => {
   const [categoryName, setCategoryName] = useState(''); // New state for category name
   const countdownRef = useRef();
   const navigate = useNavigate();
+  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   const gamesId = localStorage.getItem('gameID');
   const teamName = localStorage.getItem('teamName');
@@ -35,6 +38,11 @@ const Quiz = () => {
 };
 
   useEffect(() => {
+
+    if (localStorage.getItem('token')) {
+            setIsLoggedIn(true);     
+    }
+
     const fetchData = async () => {
       try {
         const response = await axios.post(
@@ -219,6 +227,8 @@ const Quiz = () => {
   const isLastQuestion = currentQuestionIndex === quizData.length - 1;
 
   return (
+    <>
+    {isLoggedIn?
     <div>
         <Header />
       <div className="quiz-container">
@@ -297,7 +307,8 @@ const Quiz = () => {
     <div style={chatboxStyle}>
                 <ChatRoom />
             </div>
-    </div>
+    </div> : null}
+    </>
   );
 };
 

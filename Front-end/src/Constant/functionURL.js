@@ -3,6 +3,5 @@
 //Jay URL
 export const functionURL = "https://us-central1-serverless-391018.cloudfunctions.net/app/";
 
-
 //NAVEEN URL
 // export const functionURL = "https://us-central1-data-w23-project.cloudfunctions.net/app/";

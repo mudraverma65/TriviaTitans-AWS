@@ -1,4 +1,5 @@
 const databaseClient = require('./firebaseConnection')
+const axios = require('axios');
 exports.lambdaHandler = async (event, context) => {
     const gamesData = event;
     console.log(event);
@@ -25,7 +26,11 @@ exports.lambdaHandler = async (event, context) => {
             duration :  estimatedTime
         })
 
+        await axios.post("https://5vknd5nsqk.execute-api.us-east-1.amazonaws.com/Dev/sendnotification",{
+            message: "A new game was created, Please login and try the quiz..."
+        })
         return{
+
             "gamesId": docRef.id
         }
 

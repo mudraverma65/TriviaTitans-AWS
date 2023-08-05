@@ -3,7 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Components/Header';
-
+import ChatBot from '../Components/Chatbot';
 const TeamDetails = () => {
   const navigate = useNavigate();
   const [teamMembers, setTeamMembers] = useState([]); 
@@ -202,6 +202,7 @@ const TeamDetails = () => {
   return (
     <div>
       <Header />
+      <ChatBot />
       <div className="container mt-4">
       {joinOrCreateMessage && <p className="text-center">{joinOrCreateMessage}</p>}
         <div className="text-center mb-2">
