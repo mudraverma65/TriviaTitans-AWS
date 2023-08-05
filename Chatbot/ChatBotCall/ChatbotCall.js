@@ -1,29 +1,29 @@
-const AWS = require('aws-sdk');
-const lexClient = new AWS.LexRuntimeV2({ region: 'us-east-1' });
+const AWS_SDK = require('aws-sdk');
+const lexService = new AWS_SDK.LexRuntimeV2({ region: 'us-east-1' });
 
-exports.handler = async (event) => {
-    const body = event.body ? JSON.parse(event.body) : event;
-    const message = body.message;
-    const userId = body.userId;
+exports.handler = async (payload) => {
+    const requestData = payload.body ? JSON.parse(payload.body) : payload;
+    const userMessage = requestData.message;
+    const userIdentifier = requestData.userId;
 
-    if (!userId || !message) {
+    if (!userIdentifier || !userMessage) {
         return {
             statusCode: 400,
-            body: JSON.stringify({ message: 'Invalid request' }),
+            body: JSON.stringify({ alert: 'Invalid data received' }),
         };
     }
 
     try {
-        const lexParams = {
+        const lexInput = {
             botAliasId: 'TSTALIASID',
             botId: '5SVLQ9NRNX',
             localeId: 'en_US',
-            sessionId: userId,
-            text: message,
+            sessionId: userIdentifier,
+            text: userMessage,
         };
 
-        const lexResponse = await lexClient.recognizeText(lexParams).promise();
-        const botMessage = lexResponse.messages[0].content;
+        const lexOutput = await lexService.recognizeText(lexInput).promise();
+        const botResponse = lexOutput.messages[0].content;
 
         return {
             statusCode: 200,
@@ -33,13 +33,13 @@ exports.handler = async (event) => {
               "Access-Control-Allow-Origin": "http://localhost:3000",
               "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
             },
-            body: botMessage,
+            body: botResponse,
         };
-    } catch (error) {
-        console.log(error);
+    } catch (problem) {
+        console.log(problem);
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: 'Internal server error' }),
+            body: JSON.stringify({ alert: 'Unexpected server issue' }),
         };
     }
 };
