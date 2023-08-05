@@ -1,4 +1,3 @@
-
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -215,16 +214,7 @@ function Header() {
 							>
 								Teams
 							</Link>
-							<Link
-								to={Path.GAMES}
-								className={`${
-									location.pathname === Path.GAMES
-										? 'active-tab'
-										: 'inActive-tab'
-								}`}
-							>
-								Games
-							</Link>
+							
 							<Link
 								to={Path.LEADERBOARD}
 								className={`${
