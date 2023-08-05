@@ -96,30 +96,39 @@ function Verification() {
 
 
     const sendMail = async (e) => {
-    try {
-      await axios({
-        method: "post",
-        url: "https://5vknd5nsqk.execute-api.us-east-1.amazonaws.com/Dev/subscription", 
-        data: {
-          email: email,
-        },
-        headers: {
-          "Content-type": "application/json",
-        },
-      })
-        .then((res) => {
-          if (res.data.statusCode === 200) {
-            console.log("Subscribed Success")// change this path to the verify q and a.
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      // navigate(path.VERIFY_Q_AND_A);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+//     try {
+//       await axios({
+//         method: "post",
+//         url: `https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/sns-subs?emailID=${email}`, 
+//         data: {
+//           email: email,
+//         },
+//         headers: {
+//           "Content-type": "application/json",
+//         },
+//       })
+//         .then((res) => {
+//           if (res.data.statusCode === 200) {
+//             console.log("Subscribed Success")// change this path to the verify q and a.
+//           }
+//         })
+//         .catch((error) => {
+//           console.log(error);
+//         });
+//       // navigate(path.VERIFY_Q_AND_A);
+//     } catch (error) {
+//       console.log(error);
+//     }
+
+        try {
+            const response = await axios.get(`https://wlfhjj5a5a.execute-api.us-east-1.amazonaws.com/game/send-mail?emailID=${email}`);
+            if (response.status === 200) {
+                console.log("Subscribed Success")
+            }
+        } catch (error) {
+        console.error('Error fetching user teamname:', error);
+        }
+    };
 
 
     const onSubmit = async () => {

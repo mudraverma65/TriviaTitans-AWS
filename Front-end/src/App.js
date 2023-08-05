@@ -10,7 +10,7 @@ import Leaderboard from './Pages/Leaderboard';
 import UserProfile from './Pages/Profilepage';
 import JoinGame from './Pages/Joingame';
 import Quiz from './Pages/Quiz';
-import TeamDetails from './Pages/TeamDetails';
+// import TeamDetails from './Pages/TeamDetails';
 import CreateTeam from './Pages/CreateTeam';
 import LobbyPage from './Pages/LobbyPage';
 import AddCategoryForm from "./Pages/AddCategoryForm";
@@ -20,6 +20,9 @@ import FilteredGames from "./Pages/FilteredGames";
 import FilteredQuestions from "./Pages/FilteredQuestions";
 import ShowAllCategories from "./Pages/ShowAllCategories";
 import TeamStats from './Pages/TeamStats';
+
+
+import TeamDetails from './Pages/TeamDe';
 function App() {
 
   useEffect(() => {
