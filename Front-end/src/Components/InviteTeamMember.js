@@ -12,6 +12,7 @@ const InviteTeamMember = ({ teamName }) => {
   const [usersSelected, setUsersSelected] = useState([]);
   const [alreadySelected, setAlreadySelected] = useState(false);
   const [users, setUsers] = useState([]);
+  const [inviteWithoutSelection, setInviteWithoutSelection] = useState(false);
 
   const currentUserEmail = localStorage.getItem('userEmail');
   // console.log(currentUserEmail)
@@ -37,6 +38,7 @@ const InviteTeamMember = ({ teamName }) => {
     // console.log(team_name)
     try {
       if (usersSelected.length === 0) {
+        setInviteWithoutSelection(true);
         return;
       }
 
@@ -144,7 +146,12 @@ const InviteTeamMember = ({ teamName }) => {
       <button className="btn btn-success btn-block" onClick={handleInviteUsers}>
         <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
         {usersInvited ? 'User Invited!' : 'Invite Users'}
-      </button>
+      </button> <span/>
+      {inviteWithoutSelection && (
+        <div className="alert alert-danger" role="alert">
+          Please select users before inviting.
+        </div>
+      )}
     </div>
   );
 };

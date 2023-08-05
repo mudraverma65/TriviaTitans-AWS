@@ -5,7 +5,7 @@ import Header from '../Components/Header';
 import ChatBot from '../Components/Chatbot';
 const LobbyPage = () => {
   const [category, setCategory] = useState('');
-  const [difficulty, setDifficulty] = useState('');
+  const [difficulty, setDifficulty] = useState('easy');
   const [duration, setDuration] = useState('');
   const [filteredGames, setFilteredGames] = useState([]);
 
